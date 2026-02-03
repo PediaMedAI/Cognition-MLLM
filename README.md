@@ -1,11 +1,5 @@
 # Cognition-MLLM: Visual Cognition in Multimodal LLMs
 
-<p align="center">
-  <a href="https://pediamedai.github.io/Cognition-MLLM/">🌐 Project Page</a> •
-  <a href="https://huggingface.co/datasets/IrohXu/VCog-Bench">🤗 Benchmark</a> •
-  <a href="https://github.com/PediaMedAI/Cognition-MLLM">💻 Code</a>
-</p>
-
 This repository hosts the project pages for our research on visual cognition capabilities in Multimodal Large Language Models (MLLMs).
 
 ---
@@ -17,6 +11,7 @@ This repository hosts the project pages for our research on visual cognition cap
 <p align="center">
   <a href="https://arxiv.org/abs/2406.10424">📝 arXiv</a> •
   <a href="https://arxiv.org/pdf/2406.10424">📄 PDF</a> •
+  <a href="https://huggingface.co/datasets/IrohXu/VCog-Bench">🤗 Benchmark</a> •
   <a href="https://pediamedai.github.io/Cognition-MLLM/cognition-mllm/">🌐 Project Page</a>
 </p>
 
@@ -62,9 +57,10 @@ Inspired by the matrix reasoning tasks in Raven's Progressive Matrices (RPM) and
 **[2026]**
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2406.10424">📝 arXiv</a> •
-  <a href="https://arxiv.org/pdf/2406.10424">📄 PDF</a> •
-  <a href="https://pediamedai.github.io/Cognition-MLLM/cogsense/">🌐 Project Page</a>
+  <a href="https://arxiv.org/abs/2602.01541v1">📝 arXiv</a> •
+  <a href="https://arxiv.org/pdf/2602.01541v1">📄 PDF</a> •
+  <a href="https://huggingface.co/datasets/PediaMedAI/CogSense-Bench">🤗 Benchmark</a> •
+  <a href="file:///d%3A/sivanProject/PracticeTest/Cognition-MLLM/cogsense/index.html">🌐 Project Page</a>
 </p>
 
 ### Authors
