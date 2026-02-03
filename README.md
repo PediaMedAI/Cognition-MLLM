@@ -57,8 +57,8 @@ Inspired by the matrix reasoning tasks in Raven's Progressive Matrices (RPM) and
 **[2026]**
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2602.01541v1">📝 arXiv</a> •
-  <a href="https://arxiv.org/pdf/2602.01541v1">📄 PDF</a> •
+  <a href="https://arxiv.org/abs/2602.01541">📝 arXiv</a> •
+  <a href="https://arxiv.org/pdf/2602.01541">📄 PDF</a> •
   <a href="https://huggingface.co/datasets/PediaMedAI/CogSense-Bench">🤗 Benchmark</a> •
   <a href="https://pediamedai.com/Cognition-MLLM/cogsense/">🌐 Project Page</a>
 </p>
