@@ -1,1 +1,0 @@
-# Website for [COLM 2025] What is the Visual Cognition Gap between Humans and Multimodal LLMs?

@@ -93,10 +93,14 @@ To evaluate the cognitive capabilities of MLLMs, we present **CogSense-Bench**, 
 
 ### Citation
 ```bibtex
-@article{li2026cogsense,
-  title={Toward Cognitive Supersensing in Multimodal Large Language Model},
-  author={Li, Boyi and Shen, Yifan and Liu, Yuanzhe and Xu, Yifan and Liu, Jiateng and Li, Xinzhuo and Li, Zhengyuan and Zhu, Jingyuan and Zhong, Yunhan and Lan, Fangzhou and Lourentzou, Ismini and Cao, Jianguo and Rehg, James M. and Ji, Heng and Cao, Xu},
-  year={2026}
+@misc{li2026cognitivesupersensingmultimodallarge,
+      title={Toward Cognitive Supersensing in Multimodal Large Language Model}, 
+      author={Boyi Li and Yifan Shen and Yuanzhe Liu and Yifan Xu and Jiateng Liu and Xinzhuo Li and Zhengyuan Li and Jingyuan Zhu and Yunhan Zhong and Fangzhou Lan and Jianguo Cao and James M. Rehg and Heng Ji and Ismini Lourentzou and Xu Cao},
+      year={2026},
+      eprint={2602.01541},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2602.01541}, 
 }
 ```
 
