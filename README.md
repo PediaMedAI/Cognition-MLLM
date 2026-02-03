@@ -60,6 +60,7 @@ Inspired by the matrix reasoning tasks in Raven's Progressive Matrices (RPM) and
   <a href="https://arxiv.org/abs/2602.01541">📝 arXiv</a> •
   <a href="https://arxiv.org/pdf/2602.01541">📄 PDF</a> •
   <a href="https://huggingface.co/datasets/PediaMedAI/CogSense-Bench">🤗 Benchmark</a> •
+  <a href="https://huggingface.co/PediaMedAI/CogSense-8B">🤗 Model</a> •
   <a href="https://pediamedai.com/Cognition-MLLM/cogsense/">🌐 Project Page</a>
 </p>
 
@@ -77,7 +78,7 @@ Inspired by the matrix reasoning tasks in Raven's Progressive Matrices (RPM) and
 [Jianguo Cao](https://scholar.google.com/citations?user=dPPOpHUAAAAJ&hl=en)<sup>2</sup>,
 [James M. Rehg](https://rehg.org/)<sup>1</sup>,
 [Heng Ji](https://blender.cs.illinois.edu/hengji.html)<sup>1</sup>,
-[Ismini Lourentzou](https://isminoula.github.io/)<sup>1</sup>,
+[Ismini Lourentzou](https://isminoula.github.io/)<sup>1†</sup>,
 [Xu Cao](https://www.irohxucao.com/)<sup>1,2†</sup>
 
 <sup>1</sup>University of Illinois at Urbana-Champaign, <sup>2</sup>PediaMed AI
