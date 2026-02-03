@@ -74,10 +74,10 @@ Zhengyuan Li<sup>1</sup>,
 [Jingyuan Zhu](https://www.linkedin.com/in/jingyuan-zhu-6a0ab3322/)<sup>2</sup>,
 Yunhan Zhong<sup>1</sup>,
 Fangzhou Lan<sup>2</sup>,
-[Ismini Lourentzou](https://isminoula.github.io/)<sup>1</sup>,
 [Jianguo Cao](https://scholar.google.com/citations?user=dPPOpHUAAAAJ&hl=en)<sup>2</sup>,
 [James M. Rehg](https://rehg.org/)<sup>1</sup>,
 [Heng Ji](https://blender.cs.illinois.edu/hengji.html)<sup>1</sup>,
+[Ismini Lourentzou](https://isminoula.github.io/)<sup>1</sup>,
 [Xu Cao](https://www.irohxucao.com/)<sup>1,2†</sup>
 
 <sup>1</sup>University of Illinois at Urbana-Champaign, <sup>2</sup>PediaMed AI
