@@ -106,21 +106,6 @@ To evaluate the cognitive capabilities of MLLMs, we present **CogSense-Bench**, 
 
 ---
 
-## 🚀 What's Next?
-
-- GRPO RL training in matrix reasoning problems
-- MLLM for Intelligence Scale for Children problem understanding and generation
-
-**We are looking for interns** to explore MLLM Children Intelligence Simulation. If you are interested, please reach out via: `xucao [at] pediamed [dot] ai`
-
----
-
-## 📜 License
-
-This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
-
----
-
 <p align="center">
   <b>PediaMed AI</b> • University of Illinois at Urbana-Champaign
 </p>
