@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
+  <meta name="description" content="ChronoVision aligns temporal reasoning with latent visual state reconstruction for multimodal large language models.">
+  <meta name="author" content="Yifan Shen, Jian Xu, Boyi Li, Yuner Zhang, Tianjiao Yu, Bingxuan Li, Houze Yang, Rushi Wang, Xu Cao">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
+  <meta property="og:description" content="A multimodal framework for temporal reasoning through latent state reconstruction and visual grounding.">
+  <meta property="og:image" content="static/images/method-pipeline.png">
+
+  <meta name="citation_title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
+  <meta name="citation_author" content="Shen, Yifan">
+  <meta name="citation_author" content="Xu, Jian">
+  <meta name="citation_author" content="Li, Boyi">
+  <meta name="citation_author" content="Zhang, Yuner">
+  <meta name="citation_author" content="Yu, Tianjiao">
+  <meta name="citation_author" content="Li, Bingxuan">
+  <meta name="citation_author" content="Yang, Houze">
+  <meta name="citation_author" content="Wang, Rushi">
+  <meta name="citation_author" content="Cao, Xu">
+  <meta name="citation_publication_date" content="2026">
+
+  <title>ChronoVision: Temporal Reasoning via Latent State Reconstruction</title>
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/site.js"></script>
+</head>
+
+<body>
+  <button class="scroll-to-top" type="button" title="Scroll to top" aria-label="Scroll to top">↑</button>
+
+  <main id="main-content">
+    <section class="hero publication-header">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">ChronoVision: Temporal Reasoning via Latent State Reconstruction</h1>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"><a href="https://shenyifans.github.io/" target="_blank" rel="noreferrer">Yifan Shen</a><sup>1,2</sup>,</span>
+                <span class="author-block">Jian Xu<sup>1</sup>,</span>
+                <span class="author-block"><a href="https://resurgamm.github.io/" target="_blank" rel="noreferrer">Boyi Li</a><sup>1</sup>,</span>
+                <span class="author-block">Yuner Zhang<sup>3</sup>,</span>
+                <span class="author-block">Tianjiao Yu<sup>1</sup>,</span>
+                <span class="author-block">Bingxuan Li<sup>1</sup>,</span>
+                <span class="author-block">Houze Yang<sup>1</sup>,</span>
+                <span class="author-block">Rushi Wang<sup>1</sup>,</span>
+                <span class="author-block"><a href="https://www.irohxucao.com/" target="_blank" rel="noreferrer">Xu Cao</a><sup>1,2</sup></span>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <sup>1</sup> University of Illinois Urbana-Champaign<br>
+                  <sup>2</sup> PediaMed AI &nbsp;&nbsp; <sup>3</sup> University of Pennsylvania
+                </span>
+              </div>
+
+              <div class="publication-links">
+                <span class="link-block">
+                  <span class="button is-normal is-rounded is-dark" aria-disabled="true" style="opacity: 0.55; cursor: default;">
+                    <span class="icon">📄</span><span>Paper (Coming Soon)</span>
+                  </span>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/PediaMedAI/Cognition-MLLM" target="_blank" rel="noreferrer" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">⌘</span><span>Repository</span>
+                  </a>
+                </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified" style="color: black;">
+              <p>
+                Multimodal large language models excel at passive perception but struggle with complex visual cognitive tasks requiring multi-step temporal reasoning. This degradation largely stems from the ambiguity of language-based reasoning, which often fails to accurately articulate continuous visual transformations. To address this, we propose <b>ChronoVision</b>, a multimodal framework designed to align visual logic with latent imagery. During supervised fine-tuning, a Reconstructive Visual Head predicts the latent representation of the final transformed state, while an ROI Attention Locating module focuses the model on key visual evidence. In post-training, reinforcement learning with implicit process grounding jointly rewards outcome correctness, latent process alignment, and visual focus.
+              </p>
+              <p>
+                We further introduce <b>Vbvr-VQA</b>, which evaluates temporal tracking by reformulating video reasoning as a strict image-ordering task. ChronoVision achieves state-of-the-art performance with <b>73.2% in-domain overall exact-match accuracy</b> and <b>71.6% out-of-domain accuracy</b>, alongside <b>55.0% accuracy on IntPhys2</b>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background-color: #dadada81;">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-3">✅ Contributions</h2>
+            <div class="content has-text-justified" style="color: black;">
+              <ul>
+                <li><b>Vbvr-VQA.</b> We formulate temporal reasoning as exact chronological ordering of six shuffled visual states, reducing linguistic shortcuts.</li>
+                <li><b>ChronoVision.</b> A Reconstructive Visual Head predicts the final latent visual state, while ROI Attention Locating grounds reasoning in dynamic regions.</li>
+                <li><b>Implicit process grounding.</b> Reinforcement learning combines outcome, latent alignment, and visual focus rewards to reduce long-horizon reasoning errors.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-3">🧾 Vbvr-VQA Dataset and Benchmark</h2>
+            <div class="content has-text-justified" style="color: black;">
+              <p>
+                Given an initial frame and six shuffled candidate images, Vbvr-VQA requires the model to recover the exact chronological sequence. The benchmark covers fluid intelligence, crystallized intelligence, visuospatial cognition, mental simulation, and transformation tasks.
+              </p>
+            </div>
+            <figure>
+              <img src="static/images/vbvr-vqa.png" alt="Representative Vbvr-VQA examples across five cognitive categories" loading="lazy" width="2844" height="1675" style="width: 100%; height: auto;">
+              <figcaption style="font-style: normal; color: gray;"><b>Representative examples from Vbvr-VQA.</b></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-3">⚙️ Method Overview</h2>
+            <div class="content has-text-justified" style="color: black;">
+              <p>
+                ChronoVision contains three components: a <b>Reconstructive Visual Head</b> for latent final-state prediction, an <b>ROI Attention Locating</b> module for fine-grained visual grounding, and a <b>GRPO post-training stage</b> with implicit process rewards.
+              </p>
+            </div>
+            <figure>
+              <img src="static/images/method-pipeline.png" alt="ChronoVision method pipeline" loading="lazy" width="1496" height="903" style="width: 100%; height: auto;">
+              <figcaption style="font-style: normal; color: gray;"><b>Overall pipeline of ChronoVision.</b></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-3">📊 Experiment Results</h2>
+            <div class="content has-text-justified" style="color: black;">
+              <p>
+                ChronoVision reaches <b>73.2%</b> in-domain and <b>71.6%</b> out-of-domain exact-match accuracy on Vbvr-VQA, outperforming the strongest compared proprietary baseline by 17.4 points in-domain.
+              </p>
+            </div>
+
+            <div class="table-container">
+              <table class="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                  <tr><th>Model</th><th>In-Domain</th><th>Out-of-Domain</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Qwen 3.5 397B</td><td>49.4</td><td>53.2</td></tr>
+                  <tr><td>Claude Opus 4.6</td><td>55.8</td><td>60.8</td></tr>
+                  <tr><td><b>ChronoVision 9B</b></td><td><b>73.2</b></td><td><b>71.6</b></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <br>
+            <h3 class="title is-4" style="text-align: left;">Out-of-Domain Physical Reasoning</h3>
+            <div class="content has-text-justified" style="color: black;">
+              <p>
+                On IntPhys2, ChronoVision achieves <b>55.0%</b> overall accuracy, a 6.5-point improvement over the Qwen 3.5 9B backbone. The model generalizes from abstract temporal tasks to gravity, collision, momentum, and camera-motion scenarios.
+              </p>
+            </div>
+            <figure>
+              <img src="static/images/intphys2-examples.png" alt="IntPhys2 physical reasoning examples" loading="lazy" width="2255" height="975" style="width: 100%; height: auto;">
+              <figcaption style="font-style: normal; color: gray;"><b>Examples of out-of-domain physical reasoning on IntPhys2.</b></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-3">🔍 Qualitative Example</h2>
+            <div class="content has-text-justified" style="color: black;">
+              <p>
+                In a constrained block transformation problem, language-first baselines produce plausible descriptions but choose an invalid order. ChronoVision grounds each step in the changing visual regions and reconstructs the correct sequence.
+              </p>
+            </div>
+            <figure>
+              <img src="static/images/qualitative-comparison.png" alt="Qualitative comparison between ChronoVision and strong baseline models" loading="lazy" width="2165" height="1262" style="width: 100%; height: auto;">
+              <figcaption style="font-style: normal; color: gray;"><b>Qualitative comparison on a transformation-planning problem.</b></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" id="copy-bibtex" type="button" title="Copy BibTeX to clipboard">
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre id="bibtex-code"><code>@misc{shen2026chronovision,
+  title={ChronoVision: Temporal Reasoning via Latent State Reconstruction},
+  author={Yifan Shen and Jian Xu and Boyi Li and Yuner Zhang and Tianjiao Yu and Bingxuan Li and Houze Yang and Rushi Wang and Xu Cao},
+  year={2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noreferrer">Academic Project Page Template</a>, adopted from the <a href="https://nerfies.github.io" target="_blank" rel="noreferrer">Nerfies</a> project page. This website is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noreferrer">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

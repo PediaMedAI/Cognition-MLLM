@@ -37,19 +37,6 @@ Recently, Multimodal Large Language Models (MLLMs) and Vision Language Models (V
 
 Inspired by the matrix reasoning tasks in Raven's Progressive Matrices (RPM) and Wechsler Intelligence Scale for Children (WISC), we propose a new dataset **MaRs-VQA** to evaluate the visual cognition capability of MLLMs and compare their performance with existing human visual cognition studies. Based on the training data of MaRs-VQA, we also finetune a baseline model **Qwen2-VCog** with multi-stage cognition reasoning annotations.
 
-### Citation
-```bibtex
-@misc{cao2024visualcognitiongaphumans,
-      title={What is the Visual Cognition Gap between Humans and Multimodal LLMs?}, 
-      author={Xu Cao and Bolin Lai and Wenqian Ye and Yunsheng Ma and Joerg Heintz and Jintai Chen and Jianguo Cao and James M. Rehg},
-      year={2024},
-      eprint={2406.10424},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2406.10424}, 
-}
-```
-
 ---
 
 ## 📄 Paper 2: Toward Cognitive Supersensing in Multimodal Large Language Models
@@ -92,8 +79,46 @@ To mitigate this deficiency, we introduce **Cognitive Supersensing**, a novel tr
 
 To evaluate the cognitive capabilities of MLLMs, we present **CogSense-Bench**, a comprehensive visual question answering (VQA) benchmark assessing five cognitive dimensions: fluid intelligence, crystallized intelligence, visuospatial cognition, mental simulation, and visual routines.
 
+---
+
+## 📄 Paper 3: ChronoVision: Temporal Reasoning via Latent State Reconstruction
+
+**[2026]**
+
+<p align="center">
+  <a href="https://pediamedai.com/Cognition-MLLM/ChronoVision/">🌐 Project Page</a>
+</p>
+
+### Authors
+[Yifan Shen](https://shenyifans.github.io/)<sup>1,2</sup>,
+Jian Xu<sup>1</sup>,
+[Boyi Li](https://resurgamm.github.io/)<sup>1</sup>,
+Yuner Zhang<sup>3</sup>,
+Tianjiao Yu<sup>1</sup>,
+Bingxuan Li<sup>1</sup>,
+Houze Yang<sup>1</sup>,
+Rushi Wang<sup>1</sup>,
+[Xu Cao](https://www.irohxucao.com/)<sup>1,2</sup>
+
+<sup>1</sup>University of Illinois Urbana-Champaign, <sup>2</sup>PediaMed AI, <sup>3</sup>University of Pennsylvania
+
+### Abstract
+Multimodal large language models excel at passive perception but struggle with complex visual cognitive tasks requiring multi-step temporal reasoning. This degradation largely stems from the ambiguity of language-based reasoning, which often fails to accurately articulate continuous visual transformations. We propose **ChronoVision**, a multimodal framework that aligns visual logic with latent imagery. During supervised fine-tuning, a **Reconstructive Visual Head** predicts the latent representation of the final transformed state, while an **ROI Attention Locating** module focuses the model on key visual evidence. In post-training, reinforcement learning with implicit process grounding jointly rewards outcome correctness, latent process alignment, and visual focus.
+
+We further introduce **Vbvr-VQA**, which evaluates temporal tracking by reformulating video reasoning as a strict image-ordering task. ChronoVision achieves state-of-the-art performance with **73.2% in-domain overall exact-match accuracy** and **71.6% out-of-domain accuracy**, alongside **55.0% accuracy on IntPhys2**.
+
 ### Citation
 ```bibtex
+@misc{cao2024visualcognitiongaphumans,
+      title={What is the Visual Cognition Gap between Humans and Multimodal LLMs?}, 
+      author={Xu Cao and Bolin Lai and Wenqian Ye and Yunsheng Ma and Joerg Heintz and Jintai Chen and Jianguo Cao and James M. Rehg},
+      year={2024},
+      eprint={2406.10424},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2406.10424}, 
+}
+
 @misc{li2026cognitivesupersensingmultimodallarge,
       title={Toward Cognitive Supersensing in Multimodal Large Language Model}, 
       author={Boyi Li and Yifan Shen and Yuanzhe Liu and Yifan Xu and Jiateng Liu and Xinzhuo Li and Zhengyuan Li and Jingyuan Zhu and Yunhan Zhong and Fangzhou Lan and Jianguo Cao and James M. Rehg and Heng Ji and Ismini Lourentzou and Xu Cao},
@@ -102,6 +127,12 @@ To evaluate the cognitive capabilities of MLLMs, we present **CogSense-Bench**, 
       archivePrefix={arXiv},
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2602.01541}, 
+}
+
+@misc{shen2026chronovision,
+      title={ChronoVision: Temporal Reasoning via Latent State Reconstruction},
+      author={Yifan Shen and Jian Xu and Boyi Li and Yuner Zhang and Tianjiao Yu and Bingxuan Li and Houze Yang and Rushi Wang and Xu Cao},
+      year={2026}
 }
 ```
 
