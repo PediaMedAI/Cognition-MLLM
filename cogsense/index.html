@@ -1,457 +1,462 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- Primary Meta Tags -->
-  <!-- TODO: Replace with your paper title and author names -->
-  <meta name="title" content="Toward Cognitive Supersensing in Multimodal Large Language Model - Yifan Shen, Boyi Li, Yuanzhe Liu, Yifan Xu, Jiateng Liu, Xinzhuo Li, Zhengyuan Li, Jingyuan Zhu, Yunhan Zhong, Fangzhou Lan, Ismini Lourentzou, Jianguo Cao, James M. Rehg, Heng Ji, Xu Cao">
-  <!-- TODO: Write a compelling 150-160 character description of your research -->
-  <meta name="description" content="Multimodal Large Language Models (MLLMs) have achieved remarkable success in open-vocabulary perceptual tasks, yet their ability to solve complex cognitive problems remains limited, especially when visual details are abstract and require visual memory. Current approaches primarily scale Chain-of-Thought (CoT) reasoning in the text space, even when language alone is insufficient for clear and structured reasoning, and largely neglect visual reasoning mechanisms analogous to the human visuo-spatial sketchpad and visual imagery. To mitigate this deficiency, we introduce Cognitive Supersensing, a novel training paradigm that endows MLLMs with human-like visual imagery capabilities by integrating a Latent Visual Imagery Prediction (LVIP) head that jointly learns sequences of visual cognitive latent embeddings and aligns them with the answer, thereby forming vision-based internal reasoning chains. We further introduce a reinforcement learning stage that optimizes text reasoning paths based on this grounded visual latent. To evaluate the cognitive capabilities of MLLMs, we present CogSense-Bench, a comprehensive visual question answering (VQA) benchmark assessing five cognitive dimensions. Extensive experiments demonstrate that MLLMs trained with Cognitive Supersensing significantly outperform state-of-the-art baselines on CogSense-Bench and exhibit superior generalization on out-of-domain mathematics and science VQA benchmarks, suggesting that internal visual imagery is potentially key to bridging the gap between perceptual recognition and cognitive understanding. We will open-source the CogSense-Bench and our model weight.">
-  <!-- TODO: Add 5-10 relevant keywords for your research area -->
-  <meta name="keywords" content="Multimodal Large Language Models, Artificial Intelligence, Visual Reasoning, Cognitive Supersensing, Visual Imagery, Machine Learning, Computer Vision, Visual Question Answering, Reinforcement Learning, Chain-of-Thought Reasoning">
-  <!-- TODO: List all authors -->
-  <meta name="author" content="Boyi Li, Yifan Shen, Yuanzhe Liu, Yifan Xu, Jiateng Liu, Xinzhuo Li, Zhengyuan Li, Jingyuan Zhu, Yunhan Zhong, Fangzhou Lan, Ismini Lourentzou, Jianguo Cao, James M. Rehg, Heng Ji, Xu Cao">
-  <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="article">
-  <!-- TODO: Replace with your institution or lab name -->
-  <meta property="og:site_name" content="PediaMed AI">
-  <!-- TODO: Same as paper title above -->
-  <meta property="og:title" content="Toward Cognitive Supersensing in Multimodal Large Language Model">
-  <!-- TODO: Same as description above -->
-  <meta property="og:description" content="Multimodal Large Language Models (MLLMs) have achieved remarkable success in open-vocabulary perceptual tasks, yet their ability to solve complex cognitive problems remains limited, especially when visual details are abstract and require visual memory. Current approaches primarily scale Chain-of-Thought (CoT) reasoning in the text space, even when language alone is insufficient for clear and structured reasoning, and largely neglect visual reasoning mechanisms analogous to the human visuo-spatial sketchpad and visual imagery. To mitigate this deficiency, we introduce Cognitive Supersensing, a novel training paradigm that endows MLLMs with human-like visual imagery capabilities by integrating a Latent Visual Imagery Prediction (LVIP) head that jointly learns sequences of visual cognitive latent embeddings and aligns them with the answer, thereby forming vision-based internal reasoning chains. We further introduce a reinforcement learning stage that optimizes text reasoning paths based on this grounded visual latent. To evaluate the cognitive capabilities of MLLMs, we present CogSense-Bench, a comprehensive visual question answering (VQA) benchmark assessing five cognitive dimensions. Extensive experiments demonstrate that MLLMs trained with Cognitive Supersensing significantly outperform state-of-the-art baselines on CogSense-Bench and exhibit superior generalization on out-of-domain mathematics and science VQA benchmarks, suggesting that internal visual imagery is potentially key to bridging the gap between perceptual recognition and cognitive understanding. We will open-source the CogSense-Bench and our model weight.">
-  <!-- TODO: Replace with your actual website URL -->
-  <meta property="og:url" content="https://pediamed.ai/">
-
-  <!-- Twitter -->
-  <!-- TODO: Replace with your lab/institution Twitter handle -->
-  <meta name="twitter:site" content="@pediamedai">
-  <!-- TODO: Same as paper title above -->
-  <meta name="twitter:title" content="Toward Cognitive Supersensing in Multimodal Large Language Model">
-  <!-- TODO: Same as description above -->
-  <meta name="twitter:description" content="Multimodal Large Language Models (MLLMs) have achieved remarkable success in open-vocabulary perceptual tasks, yet their ability to solve complex cognitive problems remains limited, especially when visual details are abstract and require visual memory. Current approaches primarily scale Chain-of-Thought (CoT) reasoning in the text space, even when language alone is insufficient for clear and structured reasoning, and largely neglect visual reasoning mechanisms analogous to the human visuo-spatial sketchpad and visual imagery. To mitigate this deficiency, we introduce Cognitive Supersensing, a novel training paradigm that endows MLLMs with human-like visual imagery capabilities by integrating a Latent Visual Imagery Prediction (LVIP) head that jointly learns sequences of visual cognitive latent embeddings and aligns them with the answer, thereby forming vision-based internal reasoning chains. We further introduce a reinforcement learning stage that optimizes text reasoning paths based on this grounded visual latent. To evaluate the cognitive capabilities of MLLMs, we present CogSense-Bench, a comprehensive visual question answering (VQA) benchmark assessing five cognitive dimensions. Extensive experiments demonstrate that MLLMs trained with Cognitive Supersensing significantly outperform state-of-the-art baselines on CogSense-Bench and exhibit superior generalization on out-of-domain mathematics and science VQA benchmarks, suggesting that internal visual imagery is potentially key to bridging the gap between perceptual recognition and cognitive understanding. We will open-source the CogSense-Bench and our model weight.">
-
-  <!-- Academic/Research Specific -->
-  <meta name="citation_title" content="Toward Cognitive Supersensing in Multimodal Large Language Model">
-  <meta name="citation_author" content="Li, Boyi">
-  <meta name="citation_author" content="Shen, Yifan">
-  <meta name="citation_author" content="Liu, Yuanzhe">
-  <meta name="citation_author" content="Xu, Yifan">
-  <meta name="citation_author" content="Liu, Jiateng">
-  <meta name="citation_author" content="Li, Xinzhuo">
-  <meta name="citation_author" content="Li, Zhengyuan">
-  <meta name="citation_author" content="Zhu, Jingyuan">
-  <meta name="citation_author" content="Zhong, Yunhan">
-  <meta name="citation_author" content="Lan, Fangzhou">
-  <meta name="citation_author" content="Lourentzou, Ismini">
-  <meta name="citation_author" content="Cao, Jianguo">
-  <meta name="citation_author" content="Rehg, James M.">
-  <meta name="citation_author" content="Ji, Heng">
-  <meta name="citation_author" content="Cao, Xu">
-  <meta name="citation_publication_date" content="2026">
-  <meta name="citation_conference_title" content="CONFERENCE_NAME">
-  <meta name="citation_pdf_url" content="https://YOUR_DOMAIN.com/static/pdfs/paper.pdf">
-  
-  <!-- Additional SEO -->
-  <meta name="theme-color" content="#2563eb">
-  <meta name="msapplication-TileColor" content="#2563eb">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://documentcloud.adobe.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-
-  <!-- TODO: Replace with your paper title and authors -->
-  <title>Toward Cognitive Supersensing in Multimodal LargeLanguage Model</title>
-  
-  <!-- Favicon and App Icons -->
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link rel="apple-touch-icon" href="static/images/favicon.ico">
-  
-  <!-- Critical CSS - Load synchronously -->
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-  
-  <!-- Non-critical CSS - Load asynchronously -->
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  
-  <!-- Fallback for browsers that don't support preload -->
-  <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  </noscript>
-  
-  <!-- Fonts - Optimized loading -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Defer non-critical JavaScript -->
-  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cognitive Supersensing</title>
+<meta name="description" content="Toward Cognitive Supersensing in Multimodal Large Language Models. CogSense-8B learns latent visual imagery alongside its chain of thought, and CogSense-Bench evaluates five dimensions of visual cognition.">
+<meta name="keywords" content="Cognitive Supersensing, CogSense, CogSense-Bench, MLLM, visual cognition, latent visual reasoning, visual imagery, LVIP, NeurIPS 2026">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Toward Cognitive Supersensing in Multimodal Large Language Models">
+<meta property="og:description" content="MLLMs that reason with latent visual imagery. CogSense-8B reaches 73.8 on CogSense-Bench, +33.5 over GPT-5.2.">
+<meta property="og:image" content="static/images/web/framework.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="static/images/favicon.ico">
+<link rel="apple-touch-icon" href="static/images/web/logo-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="static/css/site.css">
+<script>
+  try{ const t = localStorage.getItem('cs-theme'); if (t) document.documentElement.dataset.theme = t; }catch(e){}
+</script>
 </head>
 <body>
 
-
-  <!-- Scroll to Top Button -->
-  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-  </button>
-
-  <main id="main-content">
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <!-- TODO: Replace with your paper title -->
-            <img src="static/images/cogsense.png" width="100" loading="lazy"/>
-            <h1 class="title is-1 publication-title">Toward Cognitive Supersensing in Multimodal Large Language Model</h1>
-            <div class="is-size-5 publication-authors">
-              <!-- TODO: Replace with your paper authors and their personal links -->
-               <span class="author-block">
-                <a href="https://resurgamm.github.io/" target="_blank">Boyi Li</a><sup>1,*</sup>,</span>
-              <span class="author-block">
-                <a href="https://shenyifans.github.io/" target="_blank">Yifan Shen</a><sup>1,*,§</sup>,</span>
-              <span class="author-block">
-                <a href="https://www.linkedin.com/in/yuanzhe-liu-upenn-ds/" target="_blank">Yuanzhe Liu</a><sup>1,*</sup>,</span>
-              <span class="author-block">
-                <a href="https://yfxu.org/" target="_blank">Yifan Xu</a><sup>1</sup>,</span>
-              <span class="author-block">
-                <a href="https://lumos-jiateng.github.io/" target="_blank">Jiateng Liu</a><sup>1</sup>,</span>
-              <span class="author-block">
-                <a href="https://xinzhuo20.github.io/" target="_blank">Xinzhuo Li</a><sup>1</sup>,</span>
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=HXN7DNoAAAAJ&hl=en" target="_blank">Zhengyuan Li</a><sup>1</sup>,</span>
-              <span class="author-block">
-                <a href="https://www.linkedin.com/in/jingyuan-zhu-6a0ab3322/" target="_blank">Jingyuan Zhu</a><sup>2</sup>,</span>
-              <span class="author-block">
-                <a href="#" target="_blank">Yunhan Zhong</a><sup>1</sup>,</span>
-              <span class="author-block">
-                <a href="#" target="_blank">Fangzhou Lan</a><sup>2</sup>,</span>
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=dPPOpHUAAAAJ&hl=en" target="_blank">Jianguo Cao</a><sup>2</sup>,</span>
-              <span class="author-block">
-                <a href="https://rehg.org/" target="_blank">James M. Rehg</a><sup>1</sup>,</span>
-              <span class="author-block">
-                <a href="https://blender.cs.illinois.edu/hengji.html" target="_blank">Heng Ji</a><sup>1</sup>,</span>
-              <span class="author-block">
-                <a href="https://isminoula.github.io/" target="_blank">Ismini Lourentzou</a><sup>1†</sup>,</span>
-              <span class="author-block">
-                <a href="https://www.irohxucao.com/" target="_blank">Xu Cao</a><sup>1,2,†</sup></span>
-            </div>
-
-                  <div class="is-size-5 publication-authors">
-                    <!-- TODO: Replace with your institution and conference/journal info -->
-                    <span class="author-block">
-                      <sup>1</sup> University of Illinois at Urbana-Champaign<br>
-                      <sup>2</sup> PediaMed AI<br>
-                      <span style="font-size: 1.5rem; font-weight: bold;"></span>
-                    </span>
-                    <!-- TODO: Remove this line if no equal contribution -->
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Equal Contribution, <sup>§</sup>Project lead, <sup>†</sup>Corresponding Author</small></span>
-                  </div>
-
-                 <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- TODO: Update with your arXiv paper ID -->
-                      <span class="link-block">
-                        <a href="https://arxiv.org/pdf/2602.01541" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
-
-                <!-- TODO: Update with your arXiv paper ID -->
-                <span class="link-block">
-                  <a href="https://arxiv.org/pdf/2602.01541" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
-
-               <!-- TODO: Replace with your GitHub repository URL -->
-               <span class="link-block">
-                <a href="https://github.com/PediaMedAI/Cognition-MLLM" target="_blank"
-                class="external-link button is-normal is-rounded is-dark">
-                <span class="icon">
-                  <i class="fab fa-github"></i>
-                </span>
-                <span>Code</span>
-              </a>
-            </span>
-
-            <span class="link-block">
-              <a href="https://huggingface.co/datasets/PediaMedAI/CogSense-Bench" class="external-link button is-normal is-rounded is-dark">
-                <span class="icon">
-                  🤗
-                </span>
-                <span>Benchmark</span>
-              </a>
-            </span>
-
-            <span class="link-block">
-              <a href="https://huggingface.co/PediaMedAI/CogSense-8B" class="external-link button is-normal is-rounded is-dark">
-                <span class="icon">
-                  🤗
-                </span>
-                <span>Model</span>
-              </a>
-            </span>
-
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Paper abstract -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified" style="color: black;">
-          <!-- TODO: Replace with your paper abstract -->
-          <p>
-            Multimodal Large Language Models (MLLMs) have achieved remarkable success in open-vocabulary perceptual tasks, yet their ability to solve complex cognitive problems remains limited, especially when visual details are abstract and require visual memory. Current approaches primarily scale Chain-of-Thought (CoT) reasoning in the text space, even when language alone is insufficient for clear and structured reasoning, and largely neglect visual reasoning mechanisms analogous to the human visuo-spatial sketchpad and visual imagery. To mitigate this deficiency, we introduce Cognitive Supersensing, a novel training paradigm that endows MLLMs with human-like visual imagery capabilities by integrating a Latent Visual Imagery Prediction (LVIP) head that jointly learns sequences of visual cognitive latent embeddings and aligns them with the answer, thereby forming vision-based internal reasoning chains. We further introduce a reinforcement learning stage that optimizes text reasoning paths based on this grounded visual latent. To evaluate the cognitive capabilities of MLLMs, we present CogSense-Bench, a comprehensive visual question answering (VQA) benchmark assessing five cognitive dimensions. Extensive experiments demonstrate that MLLMs trained with Cognitive Supersensing significantly outperform state-of-the-art baselines on CogSense-Bench and exhibit superior generalization on out-of-domain mathematics and science VQA benchmarks, suggesting that internal visual imagery is potentially key to bridging the gap between perceptual recognition and cognitive understanding. We will open-source the CogSense-Bench and our model weight.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End paper abstract -->
-
-<section class="section" style="background-color:#dadada81">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">✅ Contributions</h2>
-        <div class="content has-text-justified" style="color: #000;">
-          <ul class="fa-ul">
-            <li><b>Cognitive Supersensing.</b> We propose Cognitive Supersensing, a latent-space reasoning-and-learning framework with supervised fine-tuning and reinforcement learning stages that endows MLLMs with visual imagery capability by aligning semantic reasoning with latent visual world modeling.</li>
-            <br>
-            <li><b>CogSense-Bench.</b> We introduce CogSense-Bench, a comprehensive benchmark spanning five cognitive dimensions, fluid intelligence, crystallized intelligence, visuospatial cognition, mental simulation, and visual routines, providing a systematic testbed for evaluating visual cognition beyond perceptual recognition and supporting future research in this direction.</li>
-            <br>
-            <li>Through extensive experiments, we show that reasoning and planning purely in text space is often insufficient for visual cognition: CogSense-8B achieves SoTA performance on CogSense-Bench and exhibits strong OOD generalization on challenging mathematics and science VQA benchmarks, outperforming competitive baselines that rely on text-only planning.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">🧾 CogSense Dataset and Benchmark</h2>
-        <div class="content has-text-justified" style="color:#000;">
-          <p>
-            <b>CogSense-Dataset</b> comprises various visual cognitive questions classified into five categories: Fluid Intelligence, Crystallized Intelligence, Visuospatial Cognition, Mental Simulation, and Visual Routines, which require visual imagery and cognitive supersensing with deep thinking and reasoning.
-          </p>
-        </div>
-        <figure style="text-align: center;">
-          <img src="static/images/dataset_stats.png" style="width: 100%; height: auto;" loading="lazy"/>
-          <img src="static/images/dataset_example.png" style="width: 100%; height: auto;" loading="lazy"/>
-          <figcaption style="font-style: normal; color: gray;">
-            <b>CogSense-Dataset Distribution and Examples.</b>
-          </figcaption>
-        </figure>
-        <br>
-        <div class="content has-text-justified" style="color:#000;">
-          <p>
-            <b>CogSense-Bench</b> is a comprehensive benchmark spanning five cognitive dimensions, fluid intelligence, crystallized intelligence, visuospatial cognition, mental simulation, and visual routines, providing a systematic testbed for evaluating visual cognition beyond perceptual recognition and supporting future research in this direction.
-          </p>
-        </div>
-        <figure style="text-align: center;">
-          <img src="static/images/benchmark_stats.png" style="width: 50%; height: auto;" loading="lazy"/>
-          <figcaption style="font-style: normal; color: gray;">
-            <b>CogSense-Bench descriptions and statistics.</b> We have listed the number of VQA pairs corresponding to each category.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3"><img src="static/images/cogsense.png" width="70"
-            style="vertical-align: bottom;" loading="lazy"/> Method Overview</h2>
-        <figure style="text-align: center;">
-          <img src="static/images/framework.png" style="width: 100%; height: auto;" loading="lazy"/>
-          <figcaption style="font-style: normal; color: gray;">
-            <b>The framework of Cognitive Surpersensing.</b> <em>Left:</em> <b>Architecture Overview.</b> CogSense-8B is a VLM that takes images and prompts as input with a text decoder to generate the answer and a Latent Visual Imagery Prediction (LVIP) head to generate a latent representation of the image option in parallel. <em>Right:</em> <b>Method Overview.</b> To train CogSense-8B, we (1) generate reasoning paths via LLMs, (2) implement SFT to jointly optimize the LVIP head and the model weights, and (3) implement RL to further optimize reasoning paths with Latent Rationales.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">📊 Experiment Results</h2>
-        <h3 class="title is-4" style="text-align: left;">Cognitive Ability Results</h3>
-        <div class="content has-text-justified" style="color:#000;">
-          <p>
-            We evaluate CogSense-8B with different VLM baselines on CogSense-Bench. Ourmodel achieves SoTA performance in all tasks and delivers the strongest overall accuracy <b>73.8%</b>, surpassing GPT-5.2 by <b>+33.5</b>.
-          </p>
-        </div>
-        <figure style="text-align: center;">
-          <img src="static/images/cognitive_results.png" style="width: 100%; height: auto;" loading="lazy"/>
-          <figcaption style="font-style: normal; color: gray;">
-            <b>Cognitive Ability Results.</b> Performance comparison on CogSense-Bench with CogSense-8B and different VLM models. We <b>bold</b> the best results and <u>underline</u> the runner-ups. Human baseline is also listed on the first row.
-          </figcaption>
-        </figure>
-        <br>
-        <div class="content has-text-justified" style="color:#000;">
-          <p>
-            CogSense-8B more effectively captures the underlying visual regularities required for abstract pattern reasoning compared to mainstream MLLMs. 
-          </p>
-        </div>
-        <div style="margin-top: -70px;"></div> 
-      </div>  
-    </div>
-    <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- TODO: Replace with your research result images -->
-        <img src="static/images/qualitative_example_1.png" alt="First research result visualization" loading="lazy"/>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/qualitative_example_2.png" alt="Second research result visualization" loading="lazy"/>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/qualitative_example_3.png" alt="Third research result visualization" loading="lazy"/>
-      </div>
-    </div>
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <figcaption style="font-style: normal; color: gray;">
-          <b>Qualitative Examples of Visual Cognition Reasoning Across Models.</b> CogSense-8B demonstrates a coherent, multi-step logical chain that closely matches the ground truth, while other models exhibit less precise or less interpretable reasoning paths.
-        </figcaption>
-        <br>
-        <h3 class="title is-4" style="text-align: left;">General Ability Results</h3>
-        <div class="content has-text-justified" style="color:#000;">
-          <p>
-            We also evaluate the general vision-language understanding ability of CogSense-8B. CogSense-8B maintains robust performance on these general benchmarks, comparable to the backbone model.
-          </p>
-        </div>  
-        <figure style="text-align: center;">
-          <img src="static/images/general_results.png" style="width: 100%; height: auto;" loading="lazy"/>
-          <figcaption style="font-style: normal; color: gray;">
-            <b>General Ability Results.</b> Performance comparison in general tasks with CogSense-8B and the backbone model.CogSense-8B demonstrates similar general ability performance to the backbone model.
-          </figcaption>
-        </figure>
-        <br>
-        <h3 class="title is-4" style="text-align: left;">Ablation Study</h3>
-        <div class="content has-text-justified" style="color:#000;">
-          <p>
-            We evaluate performance across three variants: the standard SFT without LVIP, SFT with LVIP, and CogSense-8B that combines LVIP-supervised SFT and RL. These gains indicate that RL plays a vital role in refining the model's reasoning logic based on the supersensing obtained by LVIP.
-          </p>
-        </div>
-        <figure style="text-align: center;">
-          <img src="static/images/ablation.png" style="width: 100%; height: auto;" loading="lazy"/>
-          <figcaption style="font-style: normal; color: gray;">
-            <b>Ablation Study Results.</b> We compare the backbone model and three variants: SFT w/o LVIP, SFT w/ LVIP, and CogSense-8B. We bold the best results and <u>underline</u> the runner-ups.
-          </figcaption>
-        </figure>
-        <br>
-        <h3 class="title is-4" style="text-align: left;">Out-of-Domain Evaluation</h3>
-        <div class="content has-text-justified" style="color:#000;">
-          <p>
-            To further verify the generalization capability of CogSense-8B, we extend our evaluation to out-of-domain scenarios using the Chemistry and Math subsets of the EMMA benchmark, with both the question and the options are images.
-          </p>
-        </div>
-        <figure style="text-align: center;">
-          <img src="static/images/OOD.png" style="width: 60%; height: auto;" loading="lazy"/>
-          <figcaption style="font-style: normal; color: gray;">
-            <b>Out-of-Domain Evaluation.</b> We evaluate the generalization ability of CogSense-8B compared with the backbone on the EMMA benchmark.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<!--BibTex citation -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <div class="bibtex-header">
-        <h2 class="title">BibTeX</h2>
-        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-          <i class="fas fa-copy"></i>
-          <span class="copy-text">Copy</span>
-        </button>
-      </div>
-      <pre id="bibtex-code"><code>@article{YourPaperKey2024,
-  title={Your Paper Title Here},
-  author={First Author and Second Author and Third Author},
-  journal={Conference/Journal Name},
-  year={2024},
-  url={https://your-domain.com/your-project-page}
-}</code></pre>
-    </div>
-</section>
-<!--End BibTex citation -->
-
-
-  <footer class="footer">
+<!-- slim bar that appears once the title has scrolled away -->
+<header class="topbar" id="topbar">
   <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
+    <a class="brand" href="#top"><img src="static/images/web/logo.webp?v=2" alt="">Cognitive Supersensing</a>
+    <nav aria-label="Sections">
+      <a href="#takeaways">Takeaways</a>
+      <a href="#benchmark">CogSense-Bench</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#generalization">Generalization</a>
+      <a href="#examples">Examples</a>
+      <a href="#cite">Citation</a>
+    </nav>
+  </div>
+</header>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+</button>
 
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
+<nav class="sidenav" aria-hidden="true">
+  <a href="#top" data-label="Top"></a>
+  <a href="#takeaways" data-label="Takeaways"></a>
+  <a href="#benchmark" data-label="CogSense-Bench"></a>
+  <a href="#method" data-label="Method"></a>
+  <a href="#results" data-label="Results"></a>
+  <a href="#analysis" data-label="Analysis"></a>
+  <a href="#generalization" data-label="Generalization"></a>
+  <a href="#examples" data-label="Examples"></a>
+  <a href="#cite" data-label="Citation"></a>
+</nav>
 
-        </div>
+<main id="top">
+
+<!-- =====================================================================
+     lockup
+     ================================================================== -->
+<div class="container grid">
+  <header class="lockup hero">
+    <figure class="projlogo"><img src="static/images/web/logo.webp?v=2" alt="CogSense logo: an eye whose iris is a graph" width="678" height="460"></figure>
+
+    <div class="venue"><span class="dot"></span>NeurIPS 2026</div>
+
+    <h1 class="title">Toward <span class="wordmark">Cognitive Supersensing</span> in Multimodal Large Language Models</h1>
+
+    <p class="authors">
+      <span class="au first"><a href="https://resurgamm.github.io/">Boyi Li</a><sup>1*</sup></span>
+      <span class="au first"><a href="https://shenyifans.github.io/">Yifan Shen</a><sup>1*§</sup></span>
+      <span class="au first"><a href="https://www.linkedin.com/in/yuanzhe-liu-upenn-ds/">Yuanzhe Liu</a><sup>1*</sup></span>
+      <span class="au"><a href="https://yfxu.org/">Yifan Xu</a><sup>1</sup></span>
+      <span class="au"><a href="https://lumos-jiateng.github.io/">Jiateng Liu</a><sup>1</sup></span>
+      <span class="au"><a href="https://xinzhuo20.github.io/">Xinzhuo Li</a><sup>1</sup></span>
+      <span class="au"><a href="https://scholar.google.com/citations?user=HXN7DNoAAAAJ&amp;hl=en">Zhengyuan Li</a><sup>1</sup></span>
+      <span class="au"><a href="https://www.linkedin.com/in/jingyuan-zhu-6a0ab3322/">Jingyuan Zhu</a><sup>2</sup></span>
+      <span class="au"><span class="nm">Yunhan Zhong</span><sup>1</sup></span>
+      <span class="au"><span class="nm">Fangzhou Lan</span><sup>2</sup></span>
+      <span class="au"><a href="https://scholar.google.com/citations?user=dPPOpHUAAAAJ&amp;hl=en">Jianguo Cao</a><sup>2</sup></span>
+      <span class="au"><a href="https://rehg.org/">James M. Rehg</a><sup>1</sup></span>
+      <span class="au"><a href="https://blender.cs.illinois.edu/hengji.html">Heng Ji</a><sup>1</sup></span>
+      <span class="au"><a href="https://isminoula.github.io/">Ismini Lourentzou</a><sup>1†</sup></span>
+      <span class="au"><a href="https://www.irohxucao.com/">Xu Cao</a><sup>1,2†</sup></span>
+    </p>
+    <p class="equal"><span><sup>*</sup>Equal contribution</span><span><sup>§</sup>Project lead</span><span><sup>†</sup>Corresponding author</span></p>
+
+    <p class="orgs">
+      <span class="org"><sup>1</sup>University of Illinois Urbana-Champaign</span>
+      <span class="org"><sup>2</sup>PediaMed AI</span>
+    </p>
+
+    <p class="hero-links">
+      <a class="btn btn-solid" href="https://arxiv.org/abs/2602.01541"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" stroke-linejoin="round"/><path d="M14 3v5h5M9 13h6M9 17h4" stroke-linecap="round"/></svg>Paper</a>
+      <a class="btn" href="https://github.com/PediaMedAI/Cognition-MLLM"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.4 3.6 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>Code</a>
+      <a class="btn" href="https://huggingface.co/PediaMedAI/CogSense-8B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>Model</a>
+      <a class="btn" href="https://huggingface.co/datasets/PediaMedAI/CogSense-Bench"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6M5 12v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-6"/></svg>Data</a>
+      <a class="btn" href="#cite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5v14M10 8h9M10 12h9M10 16h5"/></svg>Citation</a>
+    </p>
+
+    <p class="lede">Today's multimodal models can <span class="kw-see">describe what they see</span>.
+      Can they also <span class="kw-imagine">reason with what they imagine</span>?</p>
+    <p class="hero-body">We introduce <strong>Cognitive Supersensing</strong>, a training paradigm that gives
+      MLLMs a <strong>latent visual imagery</strong> channel: alongside its chain of thought, the model predicts
+      how the answer should <em>look</em>, and reinforcement learning rewards rationales that stay visually
+      consistent with it. To measure the gap, we build <strong>CogSense-Bench</strong>, a VQA benchmark spanning
+      five dimensions of human visual cognition.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n o">73.8</div><div class="l">CogSense-8B average accuracy on CogSense-Bench</div></div>
+      <div class="stat"><div class="n b">+33.5</div><div class="l">points over GPT-5.2, the strongest closed model</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">cognitive dimensions, 11 source datasets</div></div>
+      <div class="stat"><div class="n">105K</div><div class="l">training VQA pairs, plus a 1,000-question test split</div></div>
+    </div>
+  </header>
+
+  <figure class="wide teaser reveal">
+    <div class="figcard pad"><img src="static/images/web/bench_strip.webp" alt="One example question from each of the five CogSense-Bench dimensions" width="3000" height="1000" loading="eager"></div>
+    <figcaption><strong>CogSense-Bench at a glance.</strong> One question per dimension. Each asks the model to hold an
+      abstract visual state in mind and transform it, which is hard to do in words alone.</figcaption>
+  </figure>
+</div>
+
+<!-- =====================================================================
+     takeaways
+     ================================================================== -->
+<section class="block" id="takeaways">
+  <div class="container">
+    <div class="sec-head"><h2>Key takeaways</h2></div>
+    <div class="grid">
+      <ol class="rail takeaways reveal">
+        <li><span class="k">01</span><span><b>Text is a brittle interface for visual cognition.</b> The best closed model, GPT-5.2,
+          averages <span class="hl">40.3</span> on CogSense-Bench; our 20-person human study averages <span class="hl">88.4</span>.
+          Chain-of-thought in words alone does not close the gap.</span></li>
+        <li><span class="k">02</span><span><b>Imagining the answer helps.</b> Adding the Latent Visual Imagery Prediction (LVIP) head to
+          supervised fine-tuning lifts the average from <span class="hl">62.3</span> to <span class="hl">68.0</span>, with
+          the largest jump on crystallized intelligence (+12.0).</span></li>
+        <li><span class="k">03</span><span><b>Rewarding visually grounded rationales compounds the gain.</b> RL over latent rationales,
+          scored by answer evidence and LVIP consistency, brings <span class="hl">CogSense-8B</span> to
+          <span class="hl">73.8</span>: best on every dimension, +33.5 over GPT-5.2 and +4.7 over the best fine-tuned baseline.</span></li>
+        <li><span class="k">04</span><span><b>The imagery is causal, not a shortcut.</b> Corrupting it mid-reasoning derails the trajectory,
+          patching it shifts answer probabilities, and linear probes decode the answer from it with rising accuracy
+          as reasoning unfolds.</span></li>
+        <li><span class="k">05</span><span><b>Gains transfer and general skills stay intact.</b> On out-of-domain EMMA, CogSense-8B gains
+          <span class="hl">+6.2</span> in chemistry and <span class="hl">+8.8</span> in math, while matching its backbone on
+          eight general and spatial VQA benchmarks.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     benchmark
+     ================================================================== -->
+<section class="block" id="benchmark">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Benchmark</span><h2>CogSense-Bench</h2></div>
+
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:44px">
+      <p>Most VQA benchmarks test <em>what</em> a model recognizes. CogSense-Bench tests <strong>how it reasons over
+        what it sees</strong>: inducing abstract rules, structuring space, simulating transformations and directing
+        attention. Its five dimensions follow established constructs from cognitive science, and each draws on
+        existing visual-reasoning datasets reformatted as multiple-choice VQA, with a
+        <strong>105.4K-pair train split</strong> and a disjoint <strong>1,000-question test split</strong>.</p>
+    </div></div>
+
+    <div class="dimtabs" role="tablist" id="dimtabs"></div>
+    <div class="explorer">
+      <div class="dim-info" id="diminfo"></div>
+      <div class="viewer" id="viewer">
+        <div class="stage" id="vstage"></div>
+        <div class="thumbs" id="vthumbs" role="tablist" aria-label="Examples"></div>
       </div>
     </div>
+
+    <div class="sub split" style="margin-top:96px">
+      <div class="prose">
+        <h3><span class="num">01</span>What the train split is made of</h3>
+        <p>Crystallized intelligence is the largest share at 37%, built from real-world Bongard problems. Fluid
+          intelligence follows at 28% from Raven-style matrices. The test split is sampled in the same proportions
+          and removed from training, so there is no leakage.</p>
+        <p>Hover a slice or a row to see its sources.</p>
+      </div>
+      <div class="donutwrap" id="donutwrap">
+        <svg class="donut" id="donut" viewBox="0 0 260 260" role="img" aria-label="Share of each dimension in the train split"></svg>
+        <ul class="legend-rows" id="donutlegend"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     method
+     ================================================================== -->
+<section class="block" id="method">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Method</span><h2>Cognitive Supersensing</h2></div>
+
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:40px">
+      <p>Many steps of visual reasoning, like rotating a shape, simulating a transformation or inducing a rule in a
+        matrix, are naturally <strong>geometric and continuous</strong>. Forcing them into discrete text tokens
+        loses structure. Inspired by the <em>visuospatial sketchpad</em> of human working memory, we let the model
+        keep part of its reasoning in a <strong>latent visual space</strong>, while language still provides
+        high-level guidance and the final explanation.</p>
+    </div></div>
+
+    <figure class="reveal">
+      <div class="figcard pad"><img src="static/images/web/framework.webp" alt="Cognitive Supersensing framework: architecture with LVIP head on the left, three training stages on the right" width="2400" height="1350" loading="lazy"></div>
+      <figcaption><strong>Framework.</strong> Left: CogSense-8B decodes text answers and, in parallel, predicts a latent
+        visual imagery of the answer option with the LVIP head. Right: the three-stage training pipeline.</figcaption>
+    </figure>
+
+    <div class="lvip-callout reveal">
+      <div>
+        <h3>The LVIP head: imagine the answer before naming it</h3>
+        <p>Humans solve matrix puzzles by <em>constructive matching</em>: picture what the missing piece should look
+          like, then compare. The <strong>Latent Visual Imagery Prediction</strong> head is a two-layer MLP on the shared
+          backbone. It pools the hidden states of the option-image tokens and predicts the visual-encoder embedding
+          of the correct option. Because it reads hidden states conditioned on the rationale so far, its prediction
+          becomes a running visual hypothesis that sharpens as reasoning proceeds.</p>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <div class="row"><div class="box b">Question + option images<small>vision encoder → projector</small></div><div class="box">Prompt<small>text tokens</small></div></div>
+        <div class="arr">↓</div>
+        <div class="row"><div class="box">LLM backbone (Qwen3-VL-8B)<small>shared hidden states</small></div></div>
+        <div class="row"><div class="arr" style="flex:1">↓</div><div class="arr" style="flex:1">↓</div></div>
+        <div class="row"><div class="box o">LVIP head<small>latent imagery ĥ<sub>y</sub> ≈ h<sub>y</sub></small></div><div class="box">Text decoder<small>rationale Z → answer y</small></div></div>
+      </div>
+    </div>
+
+    <div class="stages">
+      <div class="stagecard reveal" style="--bar:var(--d-fluid)">
+        <div class="sn">Stage I</div>
+        <h4>Reasoning chain generation</h4>
+        <p>A teacher MLLM (GPT-5) writes step-by-step rationales for each training question. Chains that reach the
+          wrong answer or hallucinate are <strong>filtered out</strong>, giving a clean CoT corpus for SFT.</p>
+        <div class="eq" data-tex="(Z,\hat y)\sim\mathcal M_T(\cdot\mid\mathcal V,\mathcal Q,\mathcal Q_{\text{gen}}),\;\; \hat y = y"></div>
+      </div>
+      <div class="stagecard reveal" style="--bar:var(--orange)">
+        <div class="sn">Stage II</div>
+        <h4>SFT with latent visual imagery prediction</h4>
+        <p>The model learns to write the rationale and, jointly, to <strong>predict the latent of the correct option
+          image</strong>. The target is the frozen visual encoder's embedding of that option.</p>
+        <div class="eq" data-tex="\mathcal L_{\text{SFT}} = -\sum_t \log q_\theta(x_t\mid X,x_{<t}) + \beta\,\mathrm{MSE}(\hat{\mathbf h}_y,\mathbf h_y)"></div>
+      </div>
+      <div class="stagecard reveal" style="--bar:var(--blue)">
+        <div class="sn">Stage III</div>
+        <h4>RL with latent rationales</h4>
+        <p>A GFlowNet samples rationales <strong>in proportion to a reward</strong> that mixes answer evidence from a
+          frozen scorer with LVIP grounding. Reference-guided filtering and SubTB on densified prefix rewards keep it stable.</p>
+        <div class="eq" data-tex="R = \alpha\log q_{\theta_0}(y\mid X,Z) \;-\; \gamma\,\big\lVert g_\psi(\bar{\mathbf H}_{\text{opt}}(X,Z)) - \mathbf h_y\big\rVert_2^2"></div>
+      </div>
+    </div>
+
+    <div class="grid"><div class="rail prose reveal" style="margin-top:36px">
+      <p><strong>At inference</strong>, CogSense-8B samples several rationales, decodes an answer from each, and keeps the
+        one with the highest length-normalized evidence under the frozen scorer: a simple MAP selection over latent
+        rationales that makes it less sensitive to any single brittle chain.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     results
+     ================================================================== -->
+<section class="block" id="results">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Results</span><h2>Leaderboard</h2></div>
+
+    <p class="lb-intro"><strong>CogSense-8B</strong> is best on all five dimensions despite being an 8B model. Closed
+      frontier models stay near 30–40, and fine-tuning open models on our train split helps a lot but still leaves
+      a gap: CogSense-8B beats the <em>same</em> fine-tuned backbone (Qwen3-VL-8B FT) by <strong>+11.5</strong>, so the gain
+      comes from the method rather than the data. Click a column to sort.</p>
+
+    <div class="lb-tools" id="lbtools">
+      <button class="chip" data-g="all" aria-pressed="true">All</button>
+      <button class="chip" data-g="prop" aria-pressed="false">Closed-source</button>
+      <button class="chip" data-g="open" aria-pressed="false">Open-source</button>
+      <button class="chip" data-g="ft" aria-pressed="false">Fine-tuned on our train split</button>
+      <span class="hint">Accuracy (%) on the 1,000-question test split</span>
+    </div>
+    <div class="tablewrap"><table class="lb" id="lb"></table></div>
+    <p class="lb-note"><b>Bold</b>: best model. <u>Underline</u>: runner-up. Red numbers: CogSense-8B's margin over the runner-up. Human row is a reference, not ranked.</p>
+
+    <details class="more">
+      <summary>How the human baseline was measured</summary>
+      <div class="inner">Twenty volunteers (ages 18–34) answered 100 questions drawn from CogSense-Bench by stratified
+        sampling, taking about 45 minutes on average. The study was IRB-approved. Since volunteers were uncompensated
+        and few, we treat the result as a <strong>reference point</strong> rather than a population estimate of human
+        cognitive performance.</div>
+    </details>
+
+    <div class="sub split" style="margin-top:88px">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>Where the gap to humans remains</h3>
+        <p>For each dimension, the best closed-source model, the best fine-tuned baseline, CogSense-8B and humans.
+          CogSense-8B <strong>nearly reaches human level on crystallized intelligence</strong> (91.0 vs 91.3) and more
+          than doubles the best closed model on fluid intelligence.</p>
+        <p><strong>Mental simulation and visual routines</strong> stay hardest: humans score 97.9 and 78.7, and every model,
+          ours included, is still far below.</p>
+      </div>
+      <div>
+        <div class="legend" id="gaplegend"></div>
+        <div class="chartscroll"><svg class="chart" id="gapchart" role="img" aria-label="Accuracy by dimension for best closed model, best fine-tuned baseline, CogSense-8B and humans"></svg></div>
+      </div>
+    </div>
+
+    <div class="sub split rev" style="margin-top:96px">
+      <div>
+        <div class="selectline">Score <div class="seg" id="abseg"></div></div>
+        <div class="ab-wrap"><table class="ab-table" id="abtable"></table></div>
+      </div>
+      <div class="prose sticky">
+        <h3><span class="num">02</span>Every component adds up</h3>
+        <p>Starting from Qwen3-VL-8B (35.5), plain SFT on our train split reaches 62.3. <strong>LVIP adds +5.7</strong>
+          on top of SFT. For RL, GRPO helps, but <strong>latent-rationale RL helps more</strong>, and the two are
+          complementary.</p>
+        <p>The full recipe, SFT with LVIP followed by RL with latent rationales, is best on every dimension at
+          <strong>73.8</strong>, ahead of also stacking GRPO (71.5).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     analysis
+     ================================================================== -->
+<section class="block" id="analysis">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Analysis</span><h2>Is the imagery really used?</h2></div>
+    <div class="grid"><div class="rail prose reveal">
+      <p>A latent supervised by the answer could, in principle, be a shortcut that simply encodes the label. We test
+        whether the intermediate LVIP states instead carry <strong>progressively built, causally used</strong> visual
+        structure, by reading them out at steps 0–40 of the chain of thought.</p>
+    </div></div>
+
+    <div class="analysis-grid">
+      <div class="chart-card reveal">
+        <h4>Noise injection</h4>
+        <p class="cap">MSE between the intermediate imagery and the ground-truth latent. Gaussian noise at step 30 sends it back up; the clean run keeps converging.</p>
+        <svg class="chart" id="ch-noise" role="img" aria-label="Noise injection line chart"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Latent patching</h4>
+        <p class="cap">Swapping latent states between correct and incorrect runs moves the probability of the correct answer with the patch.</p>
+        <svg class="chart" id="ch-patch" role="img" aria-label="Latent patching bar chart"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Linear probing</h4>
+        <p class="cap">A linear classifier on the intermediate imagery predicts the answer better and better as reasoning unfolds.</p>
+        <svg class="chart" id="ch-probe" role="img" aria-label="Linear probing accuracy chart"></svg>
+      </div>
+    </div>
+    <div class="grid"><div class="rail prose reveal" style="margin-top:32px">
+      <p>Together: the uncorrupted intermediate state matters for where reasoning ends up, it <strong>steers</strong> the
+        answer when transplanted, and it is <strong>constructed step by step</strong> rather than fixed from the start, which
+        rules out a trivial answer-conditioned shortcut.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     generalization
+     ================================================================== -->
+<section class="block" id="generalization">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Generalization</span><h2>Beyond the benchmark</h2></div>
+
+    <div class="sub split">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>Out-of-domain science and math</h3>
+        <p>EMMA's chemistry and math subsets put images in both the question and the options, and none of these
+          problems resemble our training data. CogSense-8B improves on its backbone by <strong>+6.2</strong> in
+          chemistry and <strong>+8.8</strong> in mathematics, suggesting it learns transferable visual-cognition
+          patterns rather than overfitting.</p>
+        <div id="emmabars" style="margin-top:24px"></div>
+      </div>
+      <figure>
+        <div class="figcard pad"><img src="static/images/web/emma.webp" alt="Four EMMA example problems: pattern inference, path tracing, reaction simulation, graph reasoning" width="1400" height="1556" loading="lazy"></div>
+        <figcaption><strong>EMMA sample problems.</strong></figcaption>
+      </figure>
+    </div>
+
+    <div class="sub split rev" style="margin-top:96px">
+      <div>
+        <div class="legend"><span><i style="background:var(--ink-44)"></i>Qwen3-VL-8B (base)</span><span><i style="background:var(--orange)"></i>CogSense-8B</span></div>
+        <div class="chartscroll"><svg class="chart" id="genchart" role="img" aria-label="General benchmark scores, base vs CogSense-8B"></svg></div>
+      </div>
+      <div class="prose sticky">
+        <h3><span class="num">02</span>General abilities are preserved</h3>
+        <p>On five general vision-language benchmarks and three spatial ones, CogSense-8B matches or slightly
+          exceeds its backbone. The biggest gains are on <strong>spatial reasoning</strong>: +4.4 on MMSI-Bench and
+          +2.2 on ViewSpatial-Bench.</p>
+        <p>The one dip is HallusionBench (−0.6), which is OCR-heavy: post-training trades a little text-extraction
+          skill for stronger visuospatial logic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     qualitative
+     ================================================================== -->
+<section class="block" id="examples">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Qualitative</span><h2>Reasoning side by side</h2></div>
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:28px">
+      <p>Underlined sentences are the decisive steps. Frontier models often latch onto a plausible but wrong
+        rule; CogSense-8B states the underlying pattern concisely and follows it to the answer.</p>
+    </div></div>
+    <div class="qtabs" id="qtabs">
+      <button class="chip" aria-pressed="true" data-i="0">Example 1</button>
+      <button class="chip" aria-pressed="false" data-i="1">Example 2</button>
+      <button class="chip" aria-pressed="false" data-i="2">Example 3</button>
+    </div>
+    <div class="qstage" id="qstage">
+      <div class="figcard pad on"><img src="static/images/web/qual_1.webp" alt="Qualitative comparison of Gemini 2.5 Flash, GPT-5 and CogSense-8B on a matrix reasoning question" width="2400" height="1350" loading="lazy"></div>
+      <div class="figcard pad"><img src="static/images/web/qual_2.webp" alt="Additional qualitative example" width="2400" height="1350" loading="lazy"></div>
+      <div class="figcard pad"><img src="static/images/web/qual_3.webp" alt="Additional qualitative example" width="2400" height="1350" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     citation
+     ================================================================== -->
+<section class="block" id="cite">
+  <div class="container">
+    <div class="sec-head"><h2>Citation</h2></div>
+    <div class="grid"><div class="rail">
+      <div class="bib">
+<pre id="bibtex">@inproceedings{li2026cognitive,
+  title     = {Toward Cognitive Supersensing in Multimodal Large Language Models},
+  author    = {Li, Boyi and Shen, Yifan and Liu, Yuanzhe and Xu, Yifan and
+               Liu, Jiateng and Li, Xinzhuo and Li, Zhengyuan and Zhu, Jingyuan and
+               Zhong, Yunhan and Lan, Fangzhou and Cao, Jianguo and Rehg, James M. and
+               Ji, Heng and Lourentzou, Ismini and Cao, Xu},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2026}
+}</pre>
+        <button class="btn copy" id="copybib">Copy</button>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="fl"><img src="static/images/web/logo.webp?v=2" alt="">Cognitive Supersensing · UIUC &amp; PediaMed AI</div>
+    <div>Contact: <a href="mailto:lourent2@illinois.edu">lourent2@illinois.edu</a>, <a href="mailto:xucao@pediamed.ai">xucao@pediamed.ai</a></div>
   </div>
 </footer>
 
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
-
-    <!-- End of Statcounter Code -->
-
-  </body>
-  </html>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="static/js/site.js"></script>
+</body>
+</html>
