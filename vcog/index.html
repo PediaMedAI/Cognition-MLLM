@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Visual Cognition Gap</title>
+<meta name="description" content="What is the Visual Cognition Gap between Humans and Multimodal LLMs? (COLM 2025). MaRs-VQA: 1,440 psychologist-designed matrix reasoning items with human reference data, and the Qwen2-VCog fine-tuned baseline.">
+<meta name="keywords" content="visual cognition, matrix reasoning, MaRs-VQA, VCog-Bench, Qwen2-VCog, Raven's Progressive Matrices, WISC, MLLM, COLM 2025">
+<meta name="author" content="Xu Cao, Yifan Shen, Bolin Lai, Wenqian Ye, Yunsheng Ma, Joerg Heintz, Jintai Chen, Meihuan Huang, Jianguo Cao, Aidong Zhang, James M. Rehg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="What is the Visual Cognition Gap between Humans and Multimodal LLMs?">
+<meta property="og:description" content="MaRs-VQA compares MLLMs with humans on psychologist-designed matrix puzzles. The best zero-shot model reaches 52.3 against 81.0 for human adults.">
+<meta property="og:image" content="static/images/web/teaser.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="citation_title" content="What is the Visual Cognition Gap between Humans and Multimodal LLMs?">
+<meta name="citation_author" content="Cao, Xu">
+<meta name="citation_author" content="Shen, Yifan">
+<meta name="citation_author" content="Lai, Bolin">
+<meta name="citation_author" content="Ye, Wenqian">
+<meta name="citation_author" content="Ma, Yunsheng">
+<meta name="citation_author" content="Heintz, Joerg">
+<meta name="citation_author" content="Chen, Jintai">
+<meta name="citation_author" content="Huang, Meihuan">
+<meta name="citation_author" content="Cao, Jianguo">
+<meta name="citation_author" content="Zhang, Aidong">
+<meta name="citation_author" content="Rehg, James M.">
+<meta name="citation_conference_title" content="Conference on Language Modeling (COLM) 2025">
+<meta name="citation_publication_date" content="2025">
+<meta name="citation_pdf_url" content="https://arxiv.org/pdf/2406.10424">
+<link rel="icon" href="static/images/web/logo.svg" type="image/svg+xml">
+<link rel="alternate icon" href="static/images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="static/images/web/logo-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="static/css/site.css">
+<script>
+  try{ const t = localStorage.getItem('vcog-theme'); if (t) document.documentElement.dataset.theme = t; }catch(e){}
+</script>
+</head>
+<body>
+
+<!-- slim bar that appears once the title has scrolled away -->
+<header class="topbar" id="topbar">
+  <div class="container">
+    <a class="brand" href="#top"><img src="static/images/web/logo.svg" alt="">Visual Cognition Gap</a>
+    <nav aria-label="Sections">
+      <a href="#takeaways">Takeaways</a>
+      <a href="#benchmark">MaRs-VQA</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#examples">Examples</a>
+      <a href="#cite">Citation</a>
+    </nav>
+  </div>
+</header>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+</button>
+
+<nav class="sidenav" aria-hidden="true">
+  <a href="#top" data-label="Top"></a>
+  <a href="#takeaways" data-label="Takeaways"></a>
+  <a href="#benchmark" data-label="MaRs-VQA"></a>
+  <a href="#method" data-label="Method"></a>
+  <a href="#results" data-label="Results"></a>
+  <a href="#analysis" data-label="Analysis"></a>
+  <a href="#examples" data-label="Examples"></a>
+  <a href="#cite" data-label="Citation"></a>
+</nav>
+
+<main id="top">
+
+<!-- =====================================================================
+     lockup
+     ================================================================== -->
+<div class="container grid">
+  <header class="lockup hero">
+    <figure class="projlogo"><img src="static/images/web/logo.svg" alt="Logo: a 3 by 3 matrix puzzle with the last cell missing" width="120" height="120"></figure>
+
+    <div class="venue"><span class="dot"></span>COLM 2025</div>
+
+    <h1 class="title">What is the <span class="wordmark">Visual Cognition Gap</span> between Humans and Multimodal LLMs?</h1>
+
+    <p class="authors">
+      <span class="au first"><a href="https://www.irohxucao.com/">Xu Cao</a><sup>1*</sup></span>
+      <span class="au first"><a href="https://shenyifans.github.io/">Yifan Shen</a><sup>1*</sup></span>
+      <span class="au"><a href="https://bolinlai.github.io/">Bolin Lai</a><sup>2</sup></span>
+      <span class="au"><a href="https://wenqian-ye.github.io/">Wenqian Ye</a><sup>3</sup></span>
+      <span class="au"><a href="https://ysma.me/">Yunsheng Ma</a><sup>4</sup></span>
+      <span class="au"><a href="https://neuroscience.illinois.edu/directory/profile/jheintz">Joerg Heintz</a><sup>1</sup></span>
+      <span class="au"><a href="https://whatashot.github.io/">Jintai Chen</a><sup>5</sup></span>
+      <span class="au"><a href="https://scholar.google.com/citations?user=sM_jWNkAAAAJ&amp;hl=en">Meihuan Huang</a><sup>6</sup></span>
+      <span class="au"><a href="https://scholar.google.com/citations?user=dPPOpHUAAAAJ&amp;hl=en">Jianguo Cao</a><sup>6</sup></span>
+      <span class="au"><a href="https://www.cs.virginia.edu/~az9eg/website/home.html">Aidong Zhang</a><sup>3</sup></span>
+      <span class="au"><a href="https://rehg.org/">James M. Rehg</a><sup>1</sup></span>
+    </p>
+    <p class="equal"><span><sup>*</sup>Equal contribution</span></p>
+
+    <p class="orgs">
+      <span class="org"><sup>1</sup>University of Illinois Urbana-Champaign</span>
+      <span class="org"><sup>2</sup>Georgia Institute of Technology</span>
+      <span class="org"><sup>3</sup>University of Virginia</span>
+      <span class="org"><sup>4</sup>Purdue University</span>
+      <span class="org"><sup>5</sup>HKUST (Guangzhou)</span>
+      <span class="org"><sup>6</sup>Shenzhen Children's Hospital</span>
+    </p>
+
+    <p class="hero-links">
+      <a class="btn btn-solid" href="https://arxiv.org/abs/2406.10424"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" stroke-linejoin="round"/><path d="M14 3v5h5M9 13h6M9 17h4" stroke-linecap="round"/></svg>Paper</a>
+      <a class="btn" href="https://github.com/PediaMedAI/Cognition-MLLM"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.4 3.6 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>Code</a>
+      <a class="btn" href="https://huggingface.co/datasets/IrohXu/VCog-Bench"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6M5 12v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-6"/></svg>Data</a>
+      <a class="btn" href="#cite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5v14M10 8h9M10 12h9M10 16h5"/></svg>Citation</a>
+    </p>
+
+    <p class="lede">People solve matrix puzzles <span class="kw-a">with no training at all</span>.
+      How close are <span class="kw-b">multimodal LLMs</span>?</p>
+    <p class="hero-body">Matrix reasoning, finding the rule in a 3×3 grid of abstract shapes and picking the missing cell, is a
+      core part of intelligence tests such as Raven's Progressive Matrices and the WISC. We build <strong>MaRs-VQA</strong>,
+      1,440 psychologist-designed matrix items with human reference data, and compare MLLMs with people under the same
+      zero-shot conditions. We also release <strong>Qwen2-VCog</strong>, a baseline fine-tuned on step-by-step reasoning.
+      The gap is large, and fine-tuning hides it in-domain more than it closes it.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">1,440</div><div class="l">psychologist-designed matrix items, the largest such VQA set</div></div>
+      <div class="stat"><div class="n b">81.0</div><div class="l">human adults, from the MaRs-IB study</div></div>
+      <div class="stat"><div class="n">52.3</div><div class="l">GPT-o1, the best MLLM without fine-tuning</div></div>
+      <div class="stat"><div class="n o">72.7</div><div class="l">Qwen2-VCog after SFT, yet 32.0 on out-of-domain RAVEN</div></div>
+    </div>
+  </header>
+
+  <figure class="wide teaser reveal">
+    <div class="figcard pad"><img src="static/images/web/teaser.webp" alt="A MaRs-VQA item: a 3 by 3 matrix of arcs and dots with four options. GPT-o1 chooses C and Claude 3.7 Sonnet chooses D; the answer is A" width="2400" height="1350" loading="eager"></div>
+    <figcaption><strong>An easy puzzle for people.</strong> GPT-o1 and Claude 3.7 Sonnet both describe the shapes in the grid,
+      then pick the wrong option. The answer is A.</figcaption>
+  </figure>
+</div>
+
+<!-- =====================================================================
+     takeaways
+     ================================================================== -->
+<section class="block" id="takeaways">
+  <div class="container">
+    <div class="sec-head"><h2>Key takeaways</h2></div>
+    <div class="grid">
+      <ol class="rail takeaways reveal">
+        <li><span class="k">01</span><span><b>Matrix puzzles remain hard for MLLMs.</b> With chain-of-thought prompting, the best model,
+          GPT-o1, reaches <span class="hl">52.3</span> on MaRs-VQA; GPT-4o gets <span class="hl">34.0</span> and open 7–8B models
+          17 to 24, at or below the 25% chance level. Human adults score <span class="hl">81.0</span>.</span></li>
+        <li><span class="k">02</span><span><b>Better prompting helps only a little.</b> Few-shot examples lift GPT-4o from 34.0 to 36.1;
+          multi-round option elimination to <span class="hl">42.0</span>, still 10 points below GPT-o1 and far below people.</span></li>
+        <li><span class="k">03</span><span><b>Fine-tuning closes the in-domain gap, not the real one.</b> Qwen2-VCog, a LoRA fine-tune of
+          Qwen2-VL on two-section reasoning, reaches <span class="hl">72.7</span> on MaRs-VQA but only <span class="hl">32.0</span>
+          on out-of-domain RAVEN, where humans score 84.4.</span></li>
+        <li><span class="k">04</span><span><b>The reasoning text matters.</b> Training on answers alone, without the step-by-step reasoning,
+          drops Qwen2-VCog by <span class="hl">17.9</span> points on MaRs-VQA (72.7 to 54.8).</span></li>
+        <li><span class="k">05</span><span><b>Vision is the bottleneck, not language.</b> Adding perfect text descriptions of the options
+          gives GPT-4o only <span class="hl">+2.5</span> and Qwen2-VCog nothing (72.7 to 71.4). The limit is extracting the visual
+          pattern and holding it in working memory.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     benchmark
+     ================================================================== -->
+<section class="block" id="benchmark">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Benchmark</span><h2>MaRs-VQA</h2></div>
+
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:44px">
+      <p>MaRs-VQA is built from the <strong>Matrix Reasoning Item Bank (MaRs-IB)</strong>, 18 questionnaires of 80 items each,
+        designed by psychologists for non-verbal reasoning assessment of adolescents and adults and backed by a human study
+        of 659 participants. Each item is an incomplete 3×3 matrix of abstract shapes with <strong>four candidate
+        answers</strong>. We turn every item into VQA with image options, a written description of each option, and
+        step-by-step reasoning; <strong>480 items</strong> form the test split and the rest are for training.</p>
+      <p>Try one yourself. Items get harder as more attributes change at once.</p>
+    </div></div>
+
+    <div class="dimtabs" role="tablist" id="lvtabs"></div>
+    <div class="explorer">
+      <div class="dim-info" id="lvinfo"></div>
+      <div class="puzzle" id="puzzle">
+        <div class="matrix"><img id="pzm" src="static/images/web/puzzles/l1_m.webp" alt="Matrix question" width="384" height="384"></div>
+        <p class="q">Which option completes the matrix?</p>
+        <div class="opts" id="pzopts"></div>
+        <p class="msg" id="pzmsg" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="sub split" style="margin-top:96px">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>Difficulty predicts failure</h3>
+        <p>We group test items into five levels by how many attributes change together: shape, color, size, position and
+          the number of objects. GPT-4o with chain-of-thought solves <strong>57.8%</strong> of Level 1 items but only
+          <strong>19 to 27%</strong> from Level 2 on, near the 25% chance level.</p>
+        <p>The curve resembles that of people: every extra changing attribute adds load. GPT-4o handles size changes well and
+          struggles most with items that contain several objects.</p>
+      </div>
+      <div>
+        <div class="legend"><span><i class="sq" style="background:none;border-top:2px dashed var(--ink-44);border-radius:0;height:0"></i>Chance (25%)</span><span><i class="sq" style="background:linear-gradient(90deg, var(--l1), var(--l5))"></i>GPT-4o + CoT, by level</span></div>
+        <div class="chartscroll"><svg class="chart" id="levelchart" role="img" aria-label="GPT-4o accuracy by difficulty level"></svg></div>
+      </div>
+    </div>
+
+    <div class="sub" style="margin-top:96px">
+      <div class="prose">
+        <h3><span class="num">02</span>How MaRs-VQA compares</h3>
+        <p>Earlier zero-shot matrix sets for MLLMs are small and lack human data. MaRs-VQA is 6 to 29 times larger,
+          psychologically validated, comes with human reference results, and ships VQA annotations for every item.</p>
+      </div>
+      <div class="cmpwrap"><table class="cmp" id="cmp"></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     method
+     ================================================================== -->
+<section class="block" id="method">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Method</span><h2>Testing models the way people are tested</h2></div>
+
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:40px">
+      <p>Children take matrix tests <strong>zero-shot</strong>, relying only on general skills. We evaluate MLLMs the same way:
+        a system prompt explains the task, and the model receives the question image and the option images as separate
+        inputs. For closed models we use a structured chain of thought; to give the community an open baseline, we also
+        <strong>fine-tune Qwen2-VL</strong> on MaRs-VQA's step-by-step reasoning and test it in- and out-of-domain.</p>
+    </div></div>
+
+    <figure class="reveal">
+      <div class="figcard pad"><img src="static/images/web/cot.webp" alt="Multi-image chain of thought: summarize each row, find row-level rules, summarize each option, infer the missing cell, check the constraints, answer" width="1733" height="390" loading="lazy"></div>
+      <figcaption><strong>Multi-image chain of thought.</strong> Summarize each row, induce row-level rules, summarize each option,
+        infer what the missing cell must contain, then check every option against the constraints.</figcaption>
+    </figure>
+
+    <div class="lvip-callout reveal">
+      <div>
+        <h3>Two sections: think, then answer</h3>
+        <p>Qwen2-VCog is trained to write its reasoning in a fixed, tagged format. <code>&lt;think&gt;</code> holds a short overview
+          of the puzzle, a structured description of the visual elements (color, shape, position), the <strong>rule it
+          identifies</strong>, and a <strong>check of each option</strong> against that rule. <code>&lt;answer&gt;</code> holds a
+          single statement of the chosen option. The tags keep reasoning structured instead of free-form self-talk.</p>
+      </div>
+      <figure><div class="figcard pad"><img src="static/images/web/sft.webp" alt="SFT framework: question and option images go through the visual encoder into the LLM, which is fine-tuned to output think and answer sections" width="1300" height="953" loading="lazy"></div></figure>
+    </div>
+
+    <div class="stages">
+      <div class="stagecard reveal" style="--bar:var(--c2)">
+        <div class="sn">Setting</div>
+        <h4>Zero-shot, multi-image</h4>
+        <p>The question image <i>q</i>, the option images <i>x</i> and a system prompt <i>x</i><sub>sys</sub> that only defines the
+          task. No examples, as in a human test.</p>
+        <div class="eq" data-tex="\hat y = F_\theta(\mathbf q, \mathbf x, \mathbf x_{\text{sys}})"></div>
+      </div>
+      <div class="stagecard reveal" style="--bar:var(--amber)">
+        <div class="sn">Prompting</div>
+        <h4>Chain of thought, and variants</h4>
+        <p>Structured CoT for every closed model; for GPT-4o we also try <strong>few-shot examples</strong> and a
+          <strong>multi-round</strong> strategy that eliminates options and re-checks after each round.</p>
+        <div class="eq" data-tex="P(\hat{\mathbf y}\mid \mathbf q,\mathbf x,\mathbf x_{\text{sys}})=\prod_{j}P(\hat y_j\mid f(\mathbf q,\mathbf x),\mathbf x_{\text{sys}},\hat y_{<j};\theta)"></div>
+      </div>
+      <div class="stagecard reveal" style="--bar:var(--c1)">
+        <div class="sn">Fine-tuning</div>
+        <h4>Qwen2-VCog baseline</h4>
+        <p><strong>LoRA</strong> fine-tuning of Qwen2-VL-7B on the two-section reasoning annotations of the MaRs-VQA train split.
+          RAVEN is never seen in training and serves as the out-of-domain test.</p>
+        <div class="eq"><code>&lt;think&gt;…&lt;/think&gt; &lt;answer&gt;…&lt;/answer&gt;</code></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     results
+     ================================================================== -->
+<section class="block" id="results">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Results</span><h2>Leaderboard</h2></div>
+
+    <p class="lb-intro">Every model is evaluated on <strong>MaRs-VQA</strong> (480 test items, four options) and on 560 items of
+      <strong>RAVEN</strong> (eight options), the out-of-domain test. Closed models use chain-of-thought prompting; results
+      are averaged over three seeds. Click a column to sort.</p>
+
+    <div class="lb-tools" id="lbtools">
+      <button class="chip" data-g="all" aria-pressed="true">All</button>
+      <button class="chip" data-g="prop" aria-pressed="false">Closed-source</button>
+      <button class="chip" data-g="open" aria-pressed="false">Open-source</button>
+      <span class="hint">Accuracy (%)</span>
+    </div>
+    <div class="tablewrap"><table class="lb" id="lb"></table></div>
+    <p class="lb-note">Human and random rows are references and are not ranked. Qwen2-VCog is fine-tuned on the MaRs-VQA train
+      split only, so RAVEN is out-of-domain for it.</p>
+
+    <details class="more">
+      <summary>How the human baselines were measured</summary>
+      <div class="inner">Human results come from published studies. For <strong>MaRs-IB</strong>, 659 participants aged 11 to 33
+        solved the items: younger, mid and older adolescents scored 61%, 68% and 73%, and <strong>adults 81%</strong>, the figure
+        we report. For <strong>RAVEN</strong>, college students from a psychology subject pool were tested on "easily
+        perceptible" items. All model results are ours.</div>
+    </details>
+
+    <div class="sub split" style="margin-top:88px">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>Two benchmarks, one gap</h3>
+        <p>Each row shows a model's accuracy on MaRs-VQA and on RAVEN. People sit above 80 on both. Zero-shot models score
+          12 to 29 on RAVEN, where chance is 12.5, and below 35 on MaRs-VQA, with GPT-o1 the outlier at 52.3.</p>
+        <p><strong>Qwen2-VCog</strong> is the only model whose two dots sit far apart: fine-tuning moves MaRs-VQA from 23.8 to
+          72.7, but RAVEN only from 29.3 to 32.0. It picks up shortcuts in the item bank more than the skill itself.</p>
+      </div>
+      <div>
+        <div class="legend"><span><i style="background:var(--c2)"></i>MaRs-VQA (4 options)</span><span><i style="background:var(--amber)"></i>RAVEN (8 options)</span></div>
+        <div class="chartscroll"><svg class="chart" id="gapchart" role="img" aria-label="Accuracy on MaRs-VQA and RAVEN for each model and for humans"></svg></div>
+      </div>
+    </div>
+
+    <div class="sub split rev" style="margin-top:96px">
+      <figure>
+        <div class="figcard pad"><img src="static/images/web/scale.webp" alt="Bubble chart of MaRs-VQA accuracy by model group, bubble size proportional to model size; humans at about 81 percent, GPT-o1 near 52, open models near 20, Qwen2-VCog near 73" width="2400" height="642" loading="lazy"></div>
+        <figcaption><strong>Accuracy vs. scale.</strong> Bubble size is model size. Closed models are drawn at the largest size
+          since theirs is unknown; the human bubble uses 86B, the number of neurons in the brain.</figcaption>
+      </figure>
+      <div class="prose sticky">
+        <h3><span class="num">02</span>Scale alone won't close it</h3>
+        <p>Larger models do better, in line with scaling laws over a limited range. But the distance to people is large enough
+          that simply growing models is unlikely to bridge it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     analysis
+     ================================================================== -->
+<section class="block" id="analysis">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Analysis</span><h2>Why do MLLMs fail?</h2></div>
+    <div class="grid"><div class="rail prose reveal">
+      <p>Reading the models' reasoning points to three problems: they make <strong>little direct use of visual
+        features</strong>, so position and spatial details get lost; their <strong>visual working memory</strong> is short, so
+        key information fades during text reasoning; and they struggle to <strong>combine</strong> perception skills into
+        high-level reasoning. Three ablations test where the limit lies.</p>
+    </div></div>
+
+    <div class="analysis-grid">
+      <div class="chart-card reveal">
+        <h4>Prompting strategies</h4>
+        <p class="cap">GPT-4o on MaRs-VQA. Examples help a little, multi-round elimination more; none reaches GPT-o1.</p>
+        <div class="hbars" id="promptbars"></div>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Reasoning strings in SFT</h4>
+        <p class="cap">Qwen2-VCog trained with and without the step-by-step reasoning in its targets.</p>
+        <svg class="chart" id="ch-reason" role="img" aria-label="Accuracy with and without reasoning strings in SFT"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Vision or language?</h4>
+        <p class="cap">Accuracy as inputs grow: question only (options picked by CLIP similarity), plus option images, plus perfect option descriptions.</p>
+        <svg class="chart" id="ch-vl" role="img" aria-label="Accuracy under three input settings for GPT-4o and Qwen2-VCog"></svg>
+      </div>
+    </div>
+
+    <div class="sub split" style="margin-top:72px">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>What the ablations say</h3>
+        <p>Without option images, both models are near chance: they cannot read the rule from the question alone. Given the
+          images, Qwen2-VCog matches patterns well, and <strong>perfect text descriptions add nothing</strong>. Language is
+          not the bottleneck; extracting the visual pattern is.</p>
+        <p>Fine-tuning on MaRs-VQA also leaves <strong>general skills intact</strong>: Qwen2-VCog stays within noise of Qwen2-VL
+          on six standard benchmarks.</p>
+      </div>
+      <div><table class="gen" id="gentable"></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     qualitative
+     ================================================================== -->
+<section class="block" id="examples">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Qualitative</span><h2>How GPT-4o reasons</h2></div>
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:28px">
+      <p>GPT-4o often spots part of the pattern, then overlooks or misuses a key feature on the way to its answer.
+        <span style="color:#1f9d55;font-weight:500">Green</span> text marks correct reasoning,
+        <span style="color:var(--c1-ink);font-weight:500">red</span> marks errors, and green boxes mark the correct option.</p>
+    </div></div>
+    <figure class="reveal">
+      <div class="figcard pad tall"><img src="static/images/web/reasoning_cases.webp" alt="Six MaRs-VQA items with GPT-4o's reasoning; correct statements in green, wrong ones in red, correct options boxed in green" width="1700" height="2762" loading="lazy"></div>
+    </figure>
+  </div>
+</section>
+
+<!-- =====================================================================
+     citation
+     ================================================================== -->
+<section class="block" id="cite">
+  <div class="container">
+    <div class="sec-head"><h2>Citation</h2></div>
+    <div class="grid"><div class="rail">
+      <div class="bib">
+<pre id="bibtex">@inproceedings{cao2025visual,
+  title     = {What is the Visual Cognition Gap between Humans and
+               Multimodal LLMs?},
+  author    = {Cao, Xu and Shen, Yifan and Lai, Bolin and Ye, Wenqian and
+               Ma, Yunsheng and Heintz, Joerg and Chen, Jintai and
+               Huang, Meihuan and Cao, Jianguo and Zhang, Aidong and
+               Rehg, James M.},
+  booktitle = {Conference on Language Modeling (COLM)},
+  year      = {2025}
+}</pre>
+        <button class="btn copy" id="copybib">Copy</button>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="fl"><img src="static/images/web/logo.svg" alt="">Visual Cognition Gap · UIUC &amp; PediaMed AI</div>
+    <div>Contact: <a href="mailto:xucao2@illinois.edu">xucao2@illinois.edu</a>, <a href="mailto:yifan26@illinois.edu">yifan26@illinois.edu</a></div>
+  </div>
+</footer>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="static/js/site.js"></script>
+</body>
+</html>

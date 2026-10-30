@@ -1,292 +1,244 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cognition-MLLM Projects</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --text-primary: #f0f0f5;
-      --text-secondary: #9090a0;
-      --accent-1: #6366f1;
-      --accent-2: #8b5cf6;
-      --accent-3: #ec4899;
-      --card-bg: rgba(20, 20, 30, 0.7);
-      --border-color: rgba(100, 100, 120, 0.2);
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    
-    .bg-pattern {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    
-    .grid-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(100, 100, 120, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(100, 100, 120, 0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-    
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 24px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    
-    header {
-      text-align: center;
-      margin-bottom: 80px;
-    }
-    
-    .badge {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      color: white;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 24px;
-    }
-    
-    h1 {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    h1 em {
-      font-style: italic;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .subtitle {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-    
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 32px;
-    }
-    
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 40px 36px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.3),
-        0 0 60px rgba(99, 102, 241, 0.1);
-    }
-    
-    .card:hover::before {
-      opacity: 1;
-    }
-    
-    .card-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      margin-bottom: 24px;
-    }
-    
-    .card:first-child .card-icon {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.05));
-    }
-    
-    .card:last-child .card-icon {
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.05));
-    }
-    
-    .card h2 {
-      font-family: 'Instrument Serif', serif;
-      font-size: 1.75rem;
-      font-weight: 400;
-      margin-bottom: 12px;
-    }
-    
-    .card .venue {
-      display: inline-block;
-      background: rgba(99, 102, 241, 0.15);
-      color: var(--accent-1);
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-    
-    .card:last-child .venue {
-      background: rgba(236, 72, 153, 0.15);
-      color: var(--accent-3);
-    }
-    
-    .card p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.65;
-      margin-bottom: 24px;
-    }
-    
-    .card-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-primary);
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-    
-    .card-link svg {
-      transition: transform 0.3s ease;
-    }
-    
-    .card:hover .card-link svg {
-      transform: translateX(4px);
-    }
-    
-    footer {
-      text-align: center;
-      margin-top: 80px;
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-    }
-    
-    footer a {
-      color: var(--accent-1);
-      text-decoration: none;
-    }
-    
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cognition-MLLM</title>
+<meta name="description" content="Visual cognition in multimodal LLMs: three papers from UIUC and PediaMed AI. The Visual Cognition Gap (COLM 2025), Cognitive Supersensing (NeurIPS 2026) and ChronoVision (EMNLP 2026).">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cognition-MLLM: Visual Cognition in Multimodal LLMs">
+<meta property="og:description" content="Measuring the visual cognition gap between people and MLLMs, then closing it with latent visual imagery.">
+<meta property="og:image" content="cogsense/static/images/web/bench_strip.webp">
+<link rel="icon" href="vcog/static/images/web/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<script>
+  try{ const t = localStorage.getItem('cm-theme'); if (t) document.documentElement.dataset.theme = t; }catch(e){}
+</script>
+<style>
+/* Same system as the three project pages: one ink at a few alphas, Inter, soft cards. */
+:root{
+  --paper:#fff; --paper-2:#f7f7f8; --ink:#0a0a0a; --on-ink:#fff;
+  --ink-80:color-mix(in srgb, var(--ink) 80%, transparent);
+  --ink-60:color-mix(in srgb, var(--ink) 60%, transparent);
+  --ink-44:color-mix(in srgb, var(--ink) 44%, transparent);
+  --ink-20:color-mix(in srgb, var(--ink) 20%, transparent);
+  --ink-12:color-mix(in srgb, var(--ink) 12%, transparent);
+  --ink-6:color-mix(in srgb, var(--ink) 6%, transparent);
+  --ink-4:color-mix(in srgb, var(--ink) 4%, transparent);
+  --grad:linear-gradient(95deg, #e5384f 0%, #f08419 30%, #2f9be8 62%, #7b3fe4 100%);
+  /* one accent per paper, taken from each page */
+  --cs:#f08419; --cs-ink:#c25a00;
+  --cv:#7b3fe4; --cv-ink:#5b25c2;
+  --vg:#e5384f; --vg-ink:#c21f3a;
+  --r-lg:.875rem; --r-xl:1.25rem; --r-pill:2.5rem;
+  --ease:cubic-bezier(.25,.1,.25,1); --dur:250ms;
+  --shadow:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  --pad:20px;
+  color-scheme:light;
+}
+@media (min-width:768px){ :root{ --pad:32px } }
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0b0b0c; --paper-2:#151517; --ink:#f4f4f5; --on-ink:#0b0b0c;
+    --cs-ink:#ffa24d; --cv-ink:#b799ff; --vg-ink:#ff7d8d;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.4);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0b0b0c; --paper-2:#151517; --ink:#f4f4f5; --on-ink:#0b0b0c;
+  --cs-ink:#ffa24d; --cv-ink:#b799ff; --vg-ink:#ff7d8d;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.4);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:1.0625rem;line-height:1.75rem;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,p,figure,ul{margin:0}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cv);outline-offset:2px;border-radius:4px}
+.container{width:100%;max-width:76rem;margin-inline:auto;padding-inline:var(--pad)}
+
+.theme-toggle{position:fixed;top:12px;right:14px;z-index:60;width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--ink-12);background:var(--paper);display:grid;place-items:center;cursor:pointer;color:var(--ink-60)}
+.theme-toggle:hover{color:var(--ink);border-color:var(--ink-20)}
+.theme-toggle svg{width:16px;height:16px}
+
+/* hero */
+.hero{text-align:center;padding:clamp(56px, 9vw, 104px) 0 0}
+.marks{display:flex;justify-content:center;align-items:center;gap:clamp(14px, 3vw, 26px);margin-bottom:28px}
+.marks img{width:clamp(48px, 7vw, 68px);height:auto}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:500;letter-spacing:.02em;padding:5px 12px 5px 8px;
+  border-radius:var(--r-pill);background:var(--ink-4);color:var(--ink-80);margin-bottom:20px}
+.kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--grad)}
+h1{font-size:clamp(2rem, 1.2rem + 2.9vw, 3.5rem);line-height:1.1;font-weight:600;letter-spacing:-.035em;color:var(--ink-60);text-wrap:balance}
+.wordmark{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700;letter-spacing:-.045em}
+.lede{margin:24px auto 0;max-width:46rem;color:var(--ink-60)}
+.lede strong{color:var(--ink);font-weight:500}
+
+/* the research line */
+.line{margin:56px auto 0;max-width:62rem;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;text-align:left}
+@media (min-width:860px){ .line{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px} }
+.step{position:relative;padding:16px 18px;border-radius:var(--r-lg);background:var(--paper-2)}
+.step .y{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.step p{margin-top:4px;font-size:.92rem;line-height:1.4rem;color:var(--ink-60)}
+.step p b{color:var(--ink);font-weight:600}
+@media (min-width:860px){ .step:not(:last-child)::after{content:"";position:absolute;right:-11px;top:50%;width:8px;height:8px;
+  border-top:1.5px solid var(--ink-20);border-right:1.5px solid var(--ink-20);transform:translateY(-50%) rotate(45deg)} }
+
+/* paper cards */
+.papers{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-top:72px}
+.paper{display:grid;grid-template-columns:minmax(0,1fr);border-radius:var(--r-xl);background:var(--paper-2);overflow:hidden;
+  border:1px solid var(--ink-6);transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+.paper:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+@media (min-width:900px){ .paper{grid-template-columns:minmax(0,6fr) minmax(0,5fr)} .paper.rev{grid-template-columns:minmax(0,5fr) minmax(0,6fr)} .paper.rev .shot{order:2} }
+.shot{display:block;padding:clamp(14px, 2vw, 26px) clamp(14px, 2vw, 26px) 0}
+@media (min-width:900px){ .shot{display:flex;align-items:center;padding:clamp(18px, 2.2vw, 30px)} .paper.rev .shot{padding-left:0} .paper:not(.rev) .shot{padding-right:0} }
+.shot img{width:100%;background:#fff;padding:clamp(6px, 1vw, 12px);border-radius:12px;border:1px solid var(--ink-6);box-shadow:var(--shadow)}
+.body{padding:clamp(22px, 3vw, 36px)}
+.head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.head img{width:40px;height:40px;object-fit:contain}
+.venue{font-size:.78rem;font-weight:600;letter-spacing:.02em;padding:4px 10px;border-radius:var(--r-pill);
+  background:color-mix(in srgb, var(--c) 14%, transparent);color:var(--ci)}
+.name{font-size:.85rem;font-weight:500;color:var(--ink-60)}
+.paper h2{font-size:clamp(1.35rem, 1.15rem + .7vw, 1.75rem);line-height:1.25;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
+.paper h2 a{text-decoration:none}
+.paper h2 a:hover{text-decoration:underline;text-decoration-color:var(--ink-20);text-underline-offset:5px}
+.paper .sum{margin-top:12px;color:var(--ink-60);font-size:1rem;line-height:1.65rem}
+.paper .sum strong{color:var(--ink);font-weight:500}
+.nums{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.num{flex:1 1 150px;padding:12px 14px;border-radius:var(--r-lg);background:var(--paper)}
+.num .n{font-size:1.6rem;font-weight:600;letter-spacing:-.04em;line-height:1.1;font-variant-numeric:tabular-nums}
+.num .n.c{color:var(--ci)}
+.num .l{margin-top:4px;font-size:.78rem;line-height:1.15rem;color:var(--ink-60)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:var(--r-pill);font-size:.85rem;font-weight:500;
+  text-decoration:none;background:var(--ink-4);color:var(--ink);transition:background var(--dur)}
+.btn:hover{background:var(--ink-12)}
+.btn.solid{background:var(--ink);color:var(--on-ink)}
+.btn.solid:hover{background:var(--ink-80)}
+.btn svg{width:15px;height:15px;flex:none}
+
+footer{margin-top:112px;padding:40px 0 56px;border-top:1px solid var(--ink-12);font-size:.82rem;color:var(--ink-44)}
+footer .container{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center}
+footer a{color:var(--ink-60)}
+</style>
 </head>
 <body>
-  <div class="bg-pattern"></div>
-  <div class="grid-overlay"></div>
-  
-  <div class="container">
-    <header>
-      <div class="badge">Research Projects</div>
-      <h1>Visual Cognition in<br><em>Multimodal LLMs</em></h1>
-      <p class="subtitle">Exploring the frontier of visual reasoning and cognitive capabilities in large language models through innovative benchmarks and training paradigms.</p>
-    </header>
-    
-    <div class="cards">
-      <a href="cognition-mllm/" class="card">
-        <div class="card-icon">🧠</div>
-        <h2>Cognition-MLLM</h2>
-        <span class="venue">COLM 2025</span>
-        <p>What is the Visual Cognition Gap between Humans and Multimodal LLMs? Exploring matrix reasoning capabilities through the MaRs-VQA benchmark.</p>
-        <span class="card-link">
-          View Project
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </span>
-      </a>
-      
-      <a href="cogsense/" class="card">
-        <div class="card-icon">✨</div>
-        <h2>CogSense</h2>
-        <span class="venue">2026</span>
-        <p>Toward Cognitive Supersensing in Multimodal LLMs. A novel training paradigm endowing MLLMs with human-like visual imagery capabilities.</p>
-        <span class="card-link">
-          View Project
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </span>
-      </a>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+</button>
+
+<main class="container">
+  <header class="hero">
+    <div class="marks" aria-hidden="true">
+      <img src="vcog/static/images/web/logo.svg" alt="">
+      <img src="cogsense/static/images/web/logo.webp?v=2" alt="">
+      <img src="ChronoVision/static/images/web/logo.webp" alt="">
     </div>
-    
-    <footer>
-      <p>© 2026 <a href="https://github.com/PediaMedAI" target="_blank">PediaMed AI</a> · University of Illinois at Urbana-Champaign</p>
-    </footer>
+    <div class="kicker"><span class="dot"></span>UIUC &amp; PediaMed AI</div>
+    <h1><span class="wordmark">Visual Cognition</span> in Multimodal LLMs</h1>
+    <p class="lede">Multimodal LLMs can name what they see, but they struggle with the puzzles people solve by
+      <strong>holding an image in mind and transforming it</strong>. These three papers measure that gap against human data,
+      then give models a <strong>latent visual channel</strong> to reason with: first for abstract puzzles, then for events that
+      unfold over time.</p>
+
+    <div class="line">
+      <div class="step" style="--c:var(--vg-ink)"><div class="y">COLM 2025 · Measure</div>
+        <p><b>The gap.</b> On psychologist-designed matrix puzzles, the best MLLM scores 52.3 against 81.0 for human adults.</p></div>
+      <div class="step" style="--c:var(--cs-ink)"><div class="y">NeurIPS 2026 · Imagine</div>
+        <p><b>Latent visual imagery.</b> The model predicts how the answer should look while it reasons in text.</p></div>
+      <div class="step" style="--c:var(--cv-ink)"><div class="y">EMNLP 2026 · Over time</div>
+        <p><b>Latent state reconstruction.</b> The model pictures how an event ends to put its frames in order.</p></div>
+    </div>
+  </header>
+
+  <section class="papers" aria-label="Papers">
+
+    <!-- CogSense -->
+    <article class="paper" style="--c:var(--cs);--ci:var(--cs-ink)">
+      <a class="shot" href="cogsense/" aria-label="CogSense project page"><img src="cogsense/static/images/web/bench_strip.webp" alt="One example question from each of the five CogSense-Bench dimensions" width="3000" height="1000" loading="lazy"></a>
+      <div class="body">
+        <div class="head"><img src="cogsense/static/images/web/logo.webp?v=2" alt=""><span class="venue">NeurIPS 2026</span><span class="name">CogSense</span></div>
+        <h2><a href="cogsense/">Toward Cognitive Supersensing in Multimodal Large Language Models</a></h2>
+        <p class="sum">A <strong>Latent Visual Imagery Prediction</strong> head lets the model predict how the answer should look
+          alongside its chain of thought, and RL rewards rationales that stay consistent with it. <strong>CogSense-Bench</strong>
+          tests five dimensions of human visual cognition.</p>
+        <div class="nums">
+          <div class="num"><div class="n c">73.8</div><div class="l">CogSense-8B average on CogSense-Bench</div></div>
+          <div class="num"><div class="n">+33.5</div><div class="l">points over GPT-5.2, the strongest closed model</div></div>
+        </div>
+        <div class="links">
+          <a class="btn solid" href="cogsense/">Project page</a>
+          <a class="btn" href="https://arxiv.org/abs/2602.01541">Paper</a>
+          <a class="btn" href="https://github.com/PediaMedAI/Cognition-MLLM/tree/main/cogsense/Code">Code</a>
+          <a class="btn" href="https://huggingface.co/PediaMedAI/CogSense-8B">Model</a>
+          <a class="btn" href="https://huggingface.co/datasets/PediaMedAI/CogSense-Bench">Data</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ChronoVision -->
+    <article class="paper rev" style="--c:var(--cv);--ci:var(--cv-ink)">
+      <a class="shot" href="ChronoVision/" aria-label="ChronoVision project page"><img src="ChronoVision/static/images/web/bench_strip.webp" alt="Ten Vbvr-VQA ordering questions across five categories" width="2400" height="1413" loading="lazy"></a>
+      <div class="body">
+        <div class="head"><img src="ChronoVision/static/images/web/logo.webp" alt=""><span class="venue">EMNLP 2026</span><span class="name">ChronoVision</span></div>
+        <h2><a href="ChronoVision/">ChronoVision: Temporal Reasoning via Latent State Reconstruction</a></h2>
+        <p class="sum">A <strong>Reconstructive Visual Head</strong> predicts the final state of an event in latent space, ROI
+          attention looks where things change, and RL grounds each reasoning step. <strong>Vbvr-VQA</strong> asks models to put
+          six shuffled video frames back in order.</p>
+        <div class="nums">
+          <div class="num"><div class="n c">73.2</div><div class="l">overall exact match on Vbvr-VQA</div></div>
+          <div class="num"><div class="n">+17.4</div><div class="l">points over Claude Opus 4.6, the strongest baseline</div></div>
+        </div>
+        <div class="links">
+          <a class="btn solid" href="ChronoVision/">Project page</a>
+          <a class="btn" href="https://arxiv.org/abs/2608.05631">Paper</a>
+          <a class="btn" href="https://github.com/PediaMedAI/Cognition-MLLM">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Visual Cognition Gap -->
+    <article class="paper" style="--c:var(--vg);--ci:var(--vg-ink)">
+      <a class="shot" href="vcog/" aria-label="Visual Cognition Gap project page"><img src="vcog/static/images/web/teaser.webp" alt="A MaRs-VQA matrix puzzle where GPT-o1 and Claude 3.7 Sonnet choose wrong options" width="2400" height="1350" loading="lazy"></a>
+      <div class="body">
+        <div class="head"><img src="vcog/static/images/web/logo.svg" alt=""><span class="venue">COLM 2025</span><span class="name">Visual Cognition Gap</span></div>
+        <h2><a href="vcog/">What is the Visual Cognition Gap between Humans and Multimodal LLMs?</a></h2>
+        <p class="sum"><strong>MaRs-VQA</strong> turns 1,440 psychologist-designed matrix puzzles with human reference data into
+          VQA. Fine-tuning our <strong>Qwen2-VCog</strong> baseline closes the gap in-domain but barely moves out-of-domain accuracy.</p>
+        <div class="nums">
+          <div class="num"><div class="n c">52.3</div><div class="l">GPT-o1, the best MLLM without fine-tuning</div></div>
+          <div class="num"><div class="n">81.0</div><div class="l">human adults, from the MaRs-IB study</div></div>
+        </div>
+        <div class="links">
+          <a class="btn solid" href="vcog/">Project page</a>
+          <a class="btn" href="https://arxiv.org/abs/2406.10424">Paper</a>
+          <a class="btn" href="https://github.com/PediaMedAI/Cognition-MLLM">Code</a>
+          <a class="btn" href="https://huggingface.co/datasets/IrohXu/VCog-Bench">Data</a>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div>PediaMed AI · University of Illinois Urbana-Champaign</div>
+    <div><a href="https://github.com/PediaMedAI/Cognition-MLLM">GitHub repository</a></div>
   </div>
+</footer>
+
+<script>
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const r = document.documentElement;
+    const dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    r.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('cm-theme', r.dataset.theme); } catch (e) {}
+  });
+</script>
 </body>
-</html> -->
+</html>

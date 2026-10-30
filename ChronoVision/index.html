@@ -1,250 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <meta name="title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
-  <meta name="description" content="ChronoVision aligns temporal reasoning with latent visual state reconstruction for multimodal large language models.">
-  <meta name="author" content="Yifan Shen, Jian Xu, Boyi Li, Yuner Zhang, Tianjiao Yu, Bingxuan Li, Houze Yang, Rushi Wang, Xu Cao">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
-  <meta property="og:description" content="A multimodal framework for temporal reasoning through latent state reconstruction and visual grounding.">
-  <meta property="og:image" content="static/images/method-pipeline.png">
-
-  <meta name="citation_title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
-  <meta name="citation_author" content="Shen, Yifan">
-  <meta name="citation_author" content="Xu, Jian">
-  <meta name="citation_author" content="Li, Boyi">
-  <meta name="citation_author" content="Zhang, Yuner">
-  <meta name="citation_author" content="Yu, Tianjiao">
-  <meta name="citation_author" content="Li, Bingxuan">
-  <meta name="citation_author" content="Yang, Houze">
-  <meta name="citation_author" content="Wang, Rushi">
-  <meta name="citation_author" content="Cao, Xu">
-  <meta name="citation_publication_date" content="2026">
-
-  <title>ChronoVision: Temporal Reasoning via Latent State Reconstruction</title>
-  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-  <script defer src="static/js/site.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChronoVision</title>
+<meta name="description" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction (EMNLP 2026). An MLLM that reconstructs the final visual state in latent space to put shuffled video frames back in order, evaluated on the new Vbvr-VQA benchmark.">
+<meta name="keywords" content="ChronoVision, Vbvr-VQA, temporal reasoning, MLLM, latent visual reasoning, Reconstructive Visual Head, ROI attention, GRPO, IntPhys 2, EMNLP 2026">
+<meta name="author" content="Yifan Shen, Jian Xu, Boyi Li, Yuner Zhang, Tianjiao Yu, Bingxuan Li, Houze Yang, Rushi Wang, Xu Cao">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
+<meta property="og:description" content="A 9B MLLM that reconstructs the final visual state to order video frames. 73.2 exact-match on Vbvr-VQA, +17.4 over Claude Opus 4.6.">
+<meta property="og:image" content="static/images/web/framework.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="citation_title" content="ChronoVision: Temporal Reasoning via Latent State Reconstruction">
+<meta name="citation_author" content="Shen, Yifan">
+<meta name="citation_author" content="Xu, Jian">
+<meta name="citation_author" content="Li, Boyi">
+<meta name="citation_author" content="Zhang, Yuner">
+<meta name="citation_author" content="Yu, Tianjiao">
+<meta name="citation_author" content="Li, Bingxuan">
+<meta name="citation_author" content="Yang, Houze">
+<meta name="citation_author" content="Wang, Rushi">
+<meta name="citation_author" content="Cao, Xu">
+<meta name="citation_conference_title" content="EMNLP 2026">
+<meta name="citation_publication_date" content="2026">
+<meta name="citation_pdf_url" content="https://arxiv.org/pdf/2608.05631">
+<link rel="icon" href="static/images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="static/images/web/logo-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="static/css/site.css">
+<script>
+  try{ const t = localStorage.getItem('cv-theme'); if (t) document.documentElement.dataset.theme = t; }catch(e){}
+</script>
 </head>
-
 <body>
-  <button class="scroll-to-top" type="button" title="Scroll to top" aria-label="Scroll to top">↑</button>
 
-  <main id="main-content">
-    <section class="hero publication-header">
-      <div class="hero-body">
-        <div class="container is-max-desktop">
-          <div class="columns is-centered">
-            <div class="column has-text-centered">
-              <h1 class="title is-1 publication-title">ChronoVision: Temporal Reasoning via Latent State Reconstruction</h1>
+<!-- slim bar that appears once the title has scrolled away -->
+<header class="topbar" id="topbar">
+  <div class="container">
+    <a class="brand" href="#top"><img src="static/images/web/logo.webp" alt="">ChronoVision</a>
+    <nav aria-label="Sections">
+      <a href="#takeaways">Takeaways</a>
+      <a href="#benchmark">Vbvr-VQA</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#generalization">Generalization</a>
+      <a href="#examples">Examples</a>
+      <a href="#cite">Citation</a>
+    </nav>
+  </div>
+</header>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+</button>
 
-              <div class="is-size-5 publication-authors">
-                <span class="author-block"><a href="https://shenyifans.github.io/" target="_blank" rel="noreferrer">Yifan Shen</a><sup>1,2</sup>,</span>
-                <span class="author-block">Jian Xu<sup>1</sup>,</span>
-                <span class="author-block"><a href="https://resurgamm.github.io/" target="_blank" rel="noreferrer">Boyi Li</a><sup>1</sup>,</span>
-                <span class="author-block">Yuner Zhang<sup>3</sup>,</span>
-                <span class="author-block">Tianjiao Yu<sup>1</sup>,</span>
-                <span class="author-block">Bingxuan Li<sup>1</sup>,</span>
-                <span class="author-block">Houze Yang<sup>1</sup>,</span>
-                <span class="author-block">Rushi Wang<sup>1</sup>,</span>
-                <span class="author-block"><a href="https://www.irohxucao.com/" target="_blank" rel="noreferrer">Xu Cao</a><sup>1,2</sup></span>
-              </div>
+<nav class="sidenav" aria-hidden="true">
+  <a href="#top" data-label="Top"></a>
+  <a href="#takeaways" data-label="Takeaways"></a>
+  <a href="#benchmark" data-label="Vbvr-VQA"></a>
+  <a href="#method" data-label="Method"></a>
+  <a href="#results" data-label="Results"></a>
+  <a href="#analysis" data-label="Analysis"></a>
+  <a href="#generalization" data-label="Generalization"></a>
+  <a href="#examples" data-label="Examples"></a>
+  <a href="#cite" data-label="Citation"></a>
+</nav>
 
-              <div class="is-size-5 publication-authors">
-                <span class="author-block">
-                  <sup>1</sup> University of Illinois Urbana-Champaign<br>
-                  <sup>2</sup> PediaMed AI &nbsp;&nbsp; <sup>3</sup> University of Pennsylvania
-                </span>
-              </div>
+<main id="top">
 
-              <div class="publication-links">
-                <span class="link-block">
-                  <span class="button is-normal is-rounded is-dark" aria-disabled="true" style="opacity: 0.55; cursor: default;">
-                    <span class="icon">📄</span><span>Paper (Coming Soon)</span>
-                  </span>
-                </span>
-                <span class="link-block">
-                  <a href="https://github.com/PediaMedAI/Cognition-MLLM" target="_blank" rel="noreferrer" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">⌘</span><span>Repository</span>
-                  </a>
-                </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- =====================================================================
+     lockup
+     ================================================================== -->
+<div class="container grid">
+  <header class="lockup hero">
+    <figure class="projlogo"><img src="static/images/web/logo.webp" alt="ChronoVision logo: an eye inside a diamond, its pupil crossed by a clock hand" width="360" height="370"></figure>
 
-    <section class="section hero is-light">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column">
-            <h2 class="title is-3">Abstract</h2>
-            <div class="content has-text-justified" style="color: black;">
-              <p>
-                Multimodal large language models excel at passive perception but struggle with complex visual cognitive tasks requiring multi-step temporal reasoning. This degradation largely stems from the ambiguity of language-based reasoning, which often fails to accurately articulate continuous visual transformations. To address this, we propose <b>ChronoVision</b>, a multimodal framework designed to align visual logic with latent imagery. During supervised fine-tuning, a Reconstructive Visual Head predicts the latent representation of the final transformed state, while an ROI Attention Locating module focuses the model on key visual evidence. In post-training, reinforcement learning with implicit process grounding jointly rewards outcome correctness, latent process alignment, and visual focus.
-              </p>
-              <p>
-                We further introduce <b>Vbvr-VQA</b>, which evaluates temporal tracking by reformulating video reasoning as a strict image-ordering task. ChronoVision achieves state-of-the-art performance with <b>73.2% in-domain overall exact-match accuracy</b> and <b>71.6% out-of-domain accuracy</b>, alongside <b>55.0% accuracy on IntPhys2</b>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="venue"><span class="dot"></span>EMNLP 2026</div>
 
-    <section class="section" style="background-color: #dadada81;">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column">
-            <h2 class="title is-3">✅ Contributions</h2>
-            <div class="content has-text-justified" style="color: black;">
-              <ul>
-                <li><b>Vbvr-VQA.</b> We formulate temporal reasoning as exact chronological ordering of six shuffled visual states, reducing linguistic shortcuts.</li>
-                <li><b>ChronoVision.</b> A Reconstructive Visual Head predicts the final latent visual state, while ROI Attention Locating grounds reasoning in dynamic regions.</li>
-                <li><b>Implicit process grounding.</b> Reinforcement learning combines outcome, latent alignment, and visual focus rewards to reduce long-horizon reasoning errors.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <h1 class="title"><span class="wordmark">ChronoVision</span>: Temporal Reasoning via Latent State Reconstruction</h1>
 
-    <section class="section hero is-light">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column">
-            <h2 class="title is-3">🧾 Vbvr-VQA Dataset and Benchmark</h2>
-            <div class="content has-text-justified" style="color: black;">
-              <p>
-                Given an initial frame and six shuffled candidate images, Vbvr-VQA requires the model to recover the exact chronological sequence. The benchmark covers fluid intelligence, crystallized intelligence, visuospatial cognition, mental simulation, and transformation tasks.
-              </p>
-            </div>
-            <figure>
-              <img src="static/images/vbvr-vqa.png" alt="Representative Vbvr-VQA examples across five cognitive categories" loading="lazy" width="2844" height="1675" style="width: 100%; height: auto;">
-              <figcaption style="font-style: normal; color: gray;"><b>Representative examples from Vbvr-VQA.</b></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
+    <p class="authors">
+      <span class="au first"><a href="https://shenyifans.github.io/">Yifan Shen</a><sup>1,2</sup></span>
+      <span class="au"><span class="nm">Jian Xu</span><sup>1</sup></span>
+      <span class="au"><a href="https://resurgamm.github.io/">Boyi Li</a><sup>1</sup></span>
+      <span class="au"><span class="nm">Yuner Zhang</span><sup>3</sup></span>
+      <span class="au"><span class="nm">Tianjiao Yu</span><sup>1</sup></span>
+      <span class="au"><span class="nm">Bingxuan Li</span><sup>1</sup></span>
+      <span class="au"><span class="nm">Houze Yang</span><sup>1</sup></span>
+      <span class="au"><span class="nm">Rushi Wang</span><sup>1</sup></span>
+      <span class="au"><a href="https://www.irohxucao.com/">Xu Cao</a><sup>1,2</sup></span>
+    </p>
 
-    <section class="section">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column">
-            <h2 class="title is-3">⚙️ Method Overview</h2>
-            <div class="content has-text-justified" style="color: black;">
-              <p>
-                ChronoVision contains three components: a <b>Reconstructive Visual Head</b> for latent final-state prediction, an <b>ROI Attention Locating</b> module for fine-grained visual grounding, and a <b>GRPO post-training stage</b> with implicit process rewards.
-              </p>
-            </div>
-            <figure>
-              <img src="static/images/method-pipeline.png" alt="ChronoVision method pipeline" loading="lazy" width="1496" height="903" style="width: 100%; height: auto;">
-              <figcaption style="font-style: normal; color: gray;"><b>Overall pipeline of ChronoVision.</b></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
+    <p class="orgs">
+      <span class="org"><sup>1</sup>University of Illinois Urbana-Champaign</span>
+      <span class="org"><sup>2</sup>PediaMed AI</span>
+      <span class="org"><sup>3</sup>University of Pennsylvania</span>
+    </p>
 
-    <section class="section hero is-light">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column">
-            <h2 class="title is-3">📊 Experiment Results</h2>
-            <div class="content has-text-justified" style="color: black;">
-              <p>
-                ChronoVision reaches <b>73.2%</b> in-domain and <b>71.6%</b> out-of-domain exact-match accuracy on Vbvr-VQA, outperforming the strongest compared proprietary baseline by 17.4 points in-domain.
-              </p>
-            </div>
+    <p class="hero-links">
+      <a class="btn btn-solid" href="https://arxiv.org/abs/2608.05631"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" stroke-linejoin="round"/><path d="M14 3v5h5M9 13h6M9 17h4" stroke-linecap="round"/></svg>Paper</a>
+      <a class="btn" href="https://arxiv.org/pdf/2608.05631"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>PDF</a>
+      <a class="btn" href="https://github.com/PediaMedAI/Cognition-MLLM"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.4 3.6 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>Code</a>
+      <a class="btn" href="#cite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5v14M10 8h9M10 12h9M10 16h5"/></svg>Citation</a>
+    </p>
 
-            <div class="table-container">
-              <table class="table is-striped is-hoverable is-fullwidth">
-                <thead>
-                  <tr><th>Model</th><th>In-Domain</th><th>Out-of-Domain</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Qwen 3.5 397B</td><td>49.4</td><td>53.2</td></tr>
-                  <tr><td>Claude Opus 4.6</td><td>55.8</td><td>60.8</td></tr>
-                  <tr><td><b>ChronoVision 9B</b></td><td><b>73.2</b></td><td><b>71.6</b></td></tr>
-                </tbody>
-              </table>
-            </div>
+    <p class="lede">Multimodal models can <span class="kw-a">describe every frame of a video</span>.
+      Can they tell <span class="kw-b">which frame comes next</span>?</p>
+    <p class="hero-body">We introduce <strong>ChronoVision</strong>, a framework that lets an MLLM reason about time by
+      <strong>reconstructing the final visual state in its latent space</strong>. A Reconstructive Visual Head predicts
+      what the end of the event should look like, an ROI attention module points the model at the regions that change,
+      and reinforcement learning rewards rationales that stay grounded in both. To test this without language shortcuts,
+      we build <strong>Vbvr-VQA</strong>, which turns video reasoning into putting six shuffled frames back in order.</p>
 
-            <br>
-            <h3 class="title is-4" style="text-align: left;">Out-of-Domain Physical Reasoning</h3>
-            <div class="content has-text-justified" style="color: black;">
-              <p>
-                On IntPhys2, ChronoVision achieves <b>55.0%</b> overall accuracy, a 6.5-point improvement over the Qwen 3.5 9B backbone. The model generalizes from abstract temporal tasks to gravity, collision, momentum, and camera-motion scenarios.
-              </p>
-            </div>
-            <figure>
-              <img src="static/images/intphys2-examples.png" alt="IntPhys2 physical reasoning examples" loading="lazy" width="2255" height="975" style="width: 100%; height: auto;">
-              <figcaption style="font-style: normal; color: gray;"><b>Examples of out-of-domain physical reasoning on IntPhys2.</b></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="stats">
+      <div class="stat"><div class="n o">73.2</div><div class="l">overall exact-match accuracy on Vbvr-VQA</div></div>
+      <div class="stat"><div class="n b">+17.4</div><div class="l">points over Claude Opus 4.6, the strongest baseline</div></div>
+      <div class="stat"><div class="n">55.0</div><div class="l">on out-of-domain IntPhys 2, +6.5 over the backbone</div></div>
+      <div class="stat"><div class="n">720</div><div class="l">possible orders per question, so chance is 0.14%</div></div>
+    </div>
+  </header>
 
-    <section class="section">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column">
-            <h2 class="title is-3">🔍 Qualitative Example</h2>
-            <div class="content has-text-justified" style="color: black;">
-              <p>
-                In a constrained block transformation problem, language-first baselines produce plausible descriptions but choose an invalid order. ChronoVision grounds each step in the changing visual regions and reconstructs the correct sequence.
-              </p>
-            </div>
-            <figure>
-              <img src="static/images/qualitative-comparison.png" alt="Qualitative comparison between ChronoVision and strong baseline models" loading="lazy" width="2165" height="1262" style="width: 100%; height: auto;">
-              <figcaption style="font-style: normal; color: gray;"><b>Qualitative comparison on a transformation-planning problem.</b></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
+  <figure class="wide teaser reveal">
+    <div class="figcard pad"><img src="static/images/web/bench_strip.webp" alt="Ten Vbvr-VQA questions, two per category: fluid intelligence, crystallized intelligence, mental simulation, visuospatial cognition and transformation" width="2400" height="1413" loading="eager"></div>
+    <figcaption><strong>Vbvr-VQA at a glance.</strong> Two questions from each of the five categories. Each one is a video
+      cut into six frames: the model sees the first frame, the task prompt and the six frames in shuffled order, and must
+      put them back in sequence.</figcaption>
+  </figure>
+</div>
 
-    <section class="section" id="BibTeX">
-      <div class="container is-max-desktop content">
-        <div class="bibtex-header">
-          <h2 class="title">BibTeX</h2>
-          <button class="copy-bibtex-btn" id="copy-bibtex" type="button" title="Copy BibTeX to clipboard">
-            <span class="copy-text">Copy</span>
-          </button>
-        </div>
-        <pre id="bibtex-code"><code>@misc{shen2026chronovision,
-  title={ChronoVision: Temporal Reasoning via Latent State Reconstruction},
-  author={Yifan Shen and Jian Xu and Boyi Li and Yuner Zhang and Tianjiao Yu and Bingxuan Li and Houze Yang and Rushi Wang and Xu Cao},
-  year={2026}
-}</code></pre>
-      </div>
-    </section>
-  </main>
+<!-- =====================================================================
+     takeaways
+     ================================================================== -->
+<section class="block" id="takeaways">
+  <div class="container">
+    <div class="sec-head"><h2>Key takeaways</h2></div>
+    <div class="grid">
+      <ol class="rail takeaways reveal">
+        <li><span class="k">01</span><span><b>Putting frames in order is hard for today's MLLMs.</b> The strongest baseline, Claude Opus 4.6,
+          reaches <span class="hl">55.8</span> overall exact match; our 9B backbone, Qwen3.5-9B, gets <span class="hl">14.2</span>.
+          With 720 possible orders and no answer options to read, wording alone cannot carry the model.</span></li>
+        <li><span class="k">02</span><span><b>Reconstructing the final state helps.</b> Adding the Reconstructive Visual Head (RVH) to
+          supervised fine-tuning gives <span class="hl">+3.2</span> in-domain and <span class="hl">+2.8</span> out-of-domain;
+          ROI attention locating adds another <span class="hl">+1.2</span> overall.</span></li>
+        <li><span class="k">03</span><span><b>Rewarding the process, not just the answer, compounds the gain.</b> GRPO with outcome,
+          latent-grounding and focus rewards lifts <span class="hl">ChronoVision</span> to <span class="hl">73.2</span> overall
+          (74.8 in-domain, 71.6 out-of-domain). Dropping any reward term costs 1.4 to 3.4 points.</span></li>
+        <li><span class="k">04</span><span><b>The reconstructed state is used, not a shortcut.</b> It converges to the true final frame
+          only on correct runs, noise injected mid-reasoning derails it, patching it moves the probability of the right order,
+          and a linear probe reads the order out with accuracy rising from <span class="hl">18.4%</span> to <span class="hl">74.1%</span>
+          as reasoning unfolds.</span></li>
+        <li><span class="k">05</span><span><b>It transfers to real video and keeps general skills.</b> ChronoVision scores
+          <span class="hl">55.0</span> on IntPhys 2, <span class="hl">45.89</span> on Video-Holmes and <span class="hl">74.7</span>
+          on LongVideo-Reason, while staying within 2 points of its backbone on seven general benchmarks.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content">
-            <p>
-              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noreferrer">Academic Project Page Template</a>, adopted from the <a href="https://nerfies.github.io" target="_blank" rel="noreferrer">Nerfies</a> project page. This website is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noreferrer">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-            </p>
-          </div>
-        </div>
+<!-- =====================================================================
+     benchmark
+     ================================================================== -->
+<section class="block" id="benchmark">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Benchmark</span><h2>Vbvr-VQA</h2></div>
+
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:40px">
+      <p>Multiple-choice VQA lets a model guess from the wording of the question or the options. Vbvr-VQA removes that
+        shortcut: every question is an <strong>ordering problem</strong> built from a video in the open-source
+        Very Big Video Reasoning (VBVR) suite. The model must output the <strong>exact permutation</strong> of six frames,
+        so an answer counts only if every frame is in the right place.</p>
+    </div></div>
+
+    <div class="steps reveal" aria-label="How a Vbvr-VQA question is built">
+      <div class="step"><h4>Take a reasoning video</h4><p>From 100 VBVR task generators: mazes, physics, rotations, puzzles.</p>
+        <div class="frames"><i class="first">▶</i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="step"><h4>Cut it into six segments</h4><p>Equal length along time; keep the last frame of each.</p>
+        <div class="frames"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div>
+      <div class="step"><h4>Shuffle the frames</h4><p>Relabel them A to F in random order as the candidate set.</p>
+        <div class="frames"><i class="on">C</i><i class="on">E</i><i class="on">B</i><i class="on">D</i><i class="on">F</i><i class="on">A</i></div></div>
+      <div class="step"><h4>Recover the order</h4><p>Given the first frame and the prompt, output the full sequence.</p>
+        <div class="frames"><i class="first">1st</i><i class="on">A</i><i class="on">B</i><i class="on">C</i><i class="on">D</i><i class="on">E</i></div></div>
+    </div>
+
+    <div class="dimtabs" role="tablist" id="dimtabs"></div>
+    <div class="explorer">
+      <div class="dim-info" id="diminfo"></div>
+      <div class="viewer" id="viewer">
+        <div class="stage" id="vstage"></div>
+        <div class="thumbs" id="vthumbs" role="tablist" aria-label="Examples"></div>
       </div>
     </div>
-  </footer>
+
+    <div class="sub split" style="margin-top:96px">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>Splits and annotations</h3>
+        <p>Training uses <strong>1M ordering samples</strong> processed from the VBVR training set. The test set has
+          <strong>500 questions</strong>: 250 in-domain, whose task types appear in training, and 250 out-of-domain, drawn from
+          task generators the model never sees. Train and test are generated with different random seeds, and human
+          annotators reviewed all 500 test questions.</p>
+        <p>For grounding, GPT-5 writes a reasoning trace for each training sample with <code>&lt;LOCATE&gt;</code> cues that
+          name the region changing in each frame, plus bounding boxes of those regions. GPT-5 is given the true order and
+          only explains it: <strong>the order itself always comes from the video's timeline</strong>.</p>
+        <div class="mini-stats">
+          <div class="stat"><div class="n">1M</div><div class="l">training samples</div></div>
+          <div class="stat"><div class="n">500</div><div class="l">human-reviewed test questions</div></div>
+          <div class="stat"><div class="n">250 / 250</div><div class="l">in-domain / out-of-domain</div></div>
+          <div class="stat"><div class="n">0.14%</div><div class="l">chance of a correct guess (1 / 720)</div></div>
+        </div>
+      </div>
+      <figure>
+        <div class="figcard pad"><img src="static/images/web/data_pipeline.webp" alt="Data pipeline: videos are pre-processed into a first frame plus six shuffled candidates; GPT-5 adds reasoning with LOCATE cues and bounding boxes" width="2200" height="1104" loading="lazy"></div>
+        <figcaption><strong>Data pipeline.</strong> Videos become ordering questions; GPT-5 adds reasoning traces with
+          <code>&lt;LOCATE&gt;</code> cues and boxes around the regions that change.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     method
+     ================================================================== -->
+<section class="block" id="method">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Method</span><h2>ChronoVision</h2></div>
+
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:40px">
+      <p>Words are a lossy way to describe a continuous change: try narrating a 3D rotation or a bouncing ball precisely
+        enough to order its frames. People instead <em>imagine</em> how a scene will unfold. ChronoVision gives the model a
+        version of that ability: alongside its text reasoning it <strong>reconstructs the final visual state</strong> in
+        latent space, and it learns to <strong>look at the regions that change</strong>. Reinforcement learning then rewards
+        reasoning that stays consistent with both.</p>
+    </div></div>
+
+    <figure class="reveal">
+      <div class="figcard pad"><img src="static/images/web/framework.webp" alt="ChronoVision pipeline: question frame, shuffled frames and prompt go through visual and text encoders into the LLM backbone; the Reconstructive Visual Head predicts a latent sequence and the ROI module aligns locate-token attention with the ground-truth box" width="2400" height="1448" loading="lazy"></div>
+      <figcaption><strong>Framework.</strong> A shared backbone encodes the first frame, the six shuffled candidates and the prompt.
+        The Reconstructive Visual Head predicts the latent of the final state; ROI Attention Locating pulls the attention of
+        the <code>&lt;locate&gt;</code> tokens onto the regions that change.</figcaption>
+    </figure>
+
+    <div class="lvip-callout reveal">
+      <div>
+        <h3>The Reconstructive Visual Head: picture the ending first</h3>
+        <p>Knowing where an event ends constrains the order of everything before it. The <strong>Reconstructive Visual
+          Head</strong> is a two-layer MLP that runs in parallel with the text decoder. It reads the hidden states of the
+          candidate-frame tokens and predicts the frozen visual encoder's token sequence for the <strong>final frame</strong>.
+          Because those hidden states are conditioned on the reasoning so far, the prediction becomes a running visual
+          hypothesis that sharpens step by step.</p>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <div class="row"><div class="box b">First frame + 6 shuffled frames<small>vision encoder → visual tokens</small></div><div class="box">Prompt<small>text tokens</small></div></div>
+        <div class="arr">↓</div>
+        <div class="row"><div class="box">LLM backbone (Qwen3.5-9B)<small>shared hidden states</small></div></div>
+        <div class="row"><div class="arr" style="flex:1">↓</div><div class="arr" style="flex:1">↓</div></div>
+        <div class="row"><div class="box o">Reconstructive Visual Head<small>ĥ<sub>final</sub> ≈ h<sub>final</sub></small></div><div class="box">Text decoder<small>&lt;locate&gt; cues → frame order</small></div></div>
+      </div>
+    </div>
+
+    <div class="stages">
+      <div class="stagecard reveal" style="--bar:var(--c1)">
+        <div class="sn">Fine-tuning · RVH</div>
+        <h4>Reconstruct the final state</h4>
+        <p>The model learns to write the order and, jointly, to <strong>predict the latent of the last frame</strong>,
+          the frozen visual encoder's unpooled embedding of it.</p>
+        <div class="eq" data-tex="\mathcal L_{\text{SFT}} = -\sum_t \log \pi_\theta(y^*_t\mid x,y^*_{<t}) + \lambda_{\text{RVH}}\,\mathrm{MSE}(\hat h_{\text{final}}, h_{\text{final}})"></div>
+      </div>
+      <div class="stagecard reveal" style="--bar:var(--c2)">
+        <div class="sn">Fine-tuning · ROI</div>
+        <h4>Attend where things change</h4>
+        <p>Before answering, the model writes a short <code>&lt;locate&gt;</code> cue. At one intermediate layer, attention from
+          those tokens to the first frame is pushed into the <strong>ground-truth box</strong> of the changing region.</p>
+        <div class="eq" data-tex="\mathcal L_{AC} = -\log s^{(\ell)}(\mathcal R_{\text{tar}}),\quad s^{(\ell)}=\frac{\text{mean attention in } \mathcal R_{\text{tar}}}{\text{mean attention over the image}}"></div>
+      </div>
+      <div class="stagecard reveal" style="--bar:var(--grad)">
+        <div class="sn">Reinforcement learning · GRPO</div>
+        <h4>Implicit process grounding</h4>
+        <p>A composite reward needs no extra labels: <strong>exact-match outcome</strong>, <strong>latent grounding</strong>
+          of each reasoning step against the candidate frames, and <strong>visual focus</strong> from low attention entropy.</p>
+        <div class="eq" data-tex="R = \omega_1 R_{\text{out}} + \omega_2 \tfrac1K\sum_k \max_i \tfrac{\cos(Z_k,V_i)+1}{2} + \omega_3 \tfrac1K\sum_k\Big(1-\tfrac{H(\mathbf a_k)}{\log N_{\text{img}}}\Big)"></div>
+      </div>
+    </div>
+
+    <details class="more" style="margin-top:28px">
+      <summary>Training details</summary>
+      <div class="inner">Backbone Qwen3.5-9B, trained on 8 NVIDIA H100 GPUs with DeepSpeed ZeRO-3. <strong>SFT:</strong> AdamW,
+        peak learning rate 2e-5, global batch 128, weight decay 0.05, 3 epochs with cosine decay and 3% warmup; RVH weight
+        0.1 and attention-condensation weight 0.1. The attention layer ℓ is chosen once, before fine-tuning, as the layer of
+        the base model that best concentrates on the target boxes. <strong>GRPO:</strong> learning rate 1e-6, group size 8,
+        clip ε = 0.2, KL coefficient 0.01, reward weights ω = (1.0, 0.5, 0.1).</div>
+    </details>
+  </div>
+</section>
+
+<!-- =====================================================================
+     results
+     ================================================================== -->
+<section class="block" id="results">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Results</span><h2>Leaderboard</h2></div>
+
+    <p class="lb-intro"><strong>ChronoVision</strong> is best overall, in-domain and out-of-domain with only 9B parameters.
+      Frontier models top out at 55.8 overall, and the same Qwen3.5-9B backbone without our training scores 14.2.
+      Switch the view to see each category, and click a column to sort.</p>
+
+    <div class="lb-tools" id="lbtools">
+      <div class="seg" id="lbview"></div>
+      <button class="chip" data-g="all" aria-pressed="true">All</button>
+      <button class="chip" data-g="prop" aria-pressed="false">Closed-source</button>
+      <button class="chip" data-g="open" aria-pressed="false">Open-source</button>
+      <span class="hint">Exact-match accuracy (%) on the 500-question test set</span>
+    </div>
+    <div class="tablewrap"><table class="lb" id="lb"></table></div>
+    <p class="lb-note"></p>
+
+    <details class="more">
+      <summary>Partial credit: Kendall's τ</summary>
+      <div class="inner">
+        <p>Exact match gives zero to an order with one swapped pair. Kendall's τ instead scores the share of the 15 frame
+          pairs placed in the right relative order (×100). ChronoVision still leads in every category.</p>
+        <div class="tau-wrap"><table class="tau" id="tau"></table></div>
+      </div>
+    </details>
+
+    <div class="sub split" style="margin-top:88px">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>Where it wins, and where it doesn't</h3>
+        <p>For each category, the best closed model, the best open model and ChronoVision. It leads in
+          <strong>nine of ten</strong> category columns, with the largest margin on in-domain fluid intelligence
+          (72.3 vs 32.3).</p>
+        <p>The exception is <strong>in-domain mental simulation</strong>, where Gemini 3.0 Flash reaches 80.0 against
+          ChronoVision's 68.0. Out of domain, ChronoVision leads there too (64.0 vs 60.0).</p>
+      </div>
+      <div>
+        <div class="selectline">Split <div class="seg" id="gapseg"></div></div>
+        <div class="legend" id="gaplegend"></div>
+        <div class="chartscroll"><svg class="chart" id="gapchart" role="img" aria-label="Accuracy by category for best closed model, best open model and ChronoVision"></svg></div>
+      </div>
+    </div>
+
+    <div class="sub split rev" style="margin-top:96px">
+      <div>
+        <div class="selectline">Score <div class="seg" id="abseg"></div></div>
+        <div class="ab-wrap"><table class="ab-table" id="abtable"></table></div>
+      </div>
+      <div class="prose sticky">
+        <h3><span class="num">02</span>Every component adds up</h3>
+        <p>Plain SFT without the head reaches 66.0. <strong>The RVH adds +3.0</strong> overall, <strong>ROI attention
+          +1.2</strong>, and <strong>GRPO with the full reward +3.0</strong>, for 73.2.</p>
+        <p>Every reward term matters: removing the answer reward costs 3.4 points, the latent-grounding reward 2.2, and the
+          visual-focus reward 1.4.</p>
+      </div>
+    </div>
+
+    <div class="sub split" style="margin-top:96px">
+      <div class="prose sticky">
+        <h3><span class="num">03</span>Same backbone, same data, other methods</h3>
+        <p>With the same Qwen3.5-9B backbone and identical SFT data, R1-VL and VL-Cogito supervise the reasoning process,
+          and Latent Sketchpad adds visual latents. Each trails ChronoVision by <strong>2.4 to 3.4 points</strong> overall.</p>
+        <p>None of them has a target for the <strong>final state</strong>, the one frame that pins down the whole order.</p>
+      </div>
+      <div>
+        <div class="selectline">Score <div class="seg" id="relseg"></div></div>
+        <div class="hbars" id="relbars"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     analysis
+     ================================================================== -->
+<section class="block" id="analysis">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Analysis</span><h2>Is the reconstructed state really used?</h2></div>
+    <div class="grid"><div class="rail prose reveal">
+      <p>A latent trained toward the last frame could, in principle, just memorize the answer and be ignored by the reasoning.
+        We test whether the RVH prediction is <strong>built up step by step and causally used</strong> by reading it out at
+        steps 0 to 40 of the chain of thought, averaged over 10 sampled trajectories.</p>
+    </div></div>
+
+    <div class="analysis-grid">
+      <div class="chart-card reveal">
+        <h4>Convergence</h4>
+        <p class="cap">MSE between the predicted and the true final-frame latent. Correct runs converge; incorrect runs stall.</p>
+        <svg class="chart" id="ch-conv" role="img" aria-label="Latent MSE across reasoning steps for correct and incorrect runs"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Noise injection</h4>
+        <p class="cap">Gaussian noise added to the latent at step 30 of a successful run. The error jumps and never re-converges.</p>
+        <svg class="chart" id="ch-noise" role="img" aria-label="Noise injection line chart"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Latent patching</h4>
+        <p class="cap">Swapping latents between correct and incorrect runs moves the probability of the correct order with the patch.</p>
+        <svg class="chart" id="ch-patch" role="img" aria-label="Latent patching bar chart"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Linear probing</h4>
+        <p class="cap">A linear probe on the latent predicts the in-domain order better and better as reasoning unfolds.</p>
+        <svg class="chart" id="ch-probe" role="img" aria-label="Linear probing accuracy chart"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>A wrong start</h4>
+        <p class="cap">In-domain accuracy when decoding is forced to continue from an incorrect reasoning prefix.</p>
+        <svg class="chart" id="ch-prefix" role="img" aria-label="Accuracy with and without a forced incorrect prefix"></svg>
+      </div>
+      <div class="chart-card reveal">
+        <h4>Text reasoning still matters</h4>
+        <p class="cap">In-domain accuracy when ChronoVision must output the order directly, without a chain of thought.</p>
+        <svg class="chart" id="ch-cot" role="img" aria-label="Accuracy with and without chain of thought by category"></svg>
+      </div>
+    </div>
+    <div class="grid"><div class="rail prose reveal" style="margin-top:32px">
+      <p>Together: the latent <strong>converges only when the answer is right</strong>, corrupting it derails the run,
+        transplanting it <strong>steers</strong> the order, and its content is <strong>constructed gradually</strong> rather than
+        fixed from the start. The full model also loses less than the no-head baseline when pushed down a wrong path
+        (−11.6 vs −16.0), and it still needs its text reasoning to guide the latent (67.6 without CoT vs 74.8 with).</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     generalization
+     ================================================================== -->
+<section class="block" id="generalization">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Generalization</span><h2>Beyond the benchmark</h2></div>
+
+    <div class="sub split">
+      <div class="prose sticky">
+        <h3><span class="num">01</span>Real physics, out of domain</h3>
+        <p>IntPhys 2 swaps abstract puzzles for realistic scenes: objects falling into boxes, a ball hitting a block on a slope,
+          a camera panning across a café. The model must order frames by physical plausibility, a setting where most VLMs sit
+          near the 50% chance level. ChronoVision reaches <strong>55.0</strong> overall, <strong>+6.5</strong> over
+          Qwen3.5-9B, and <strong>+11.5</strong> on the Easy split.</p>
+        <div id="intbars" style="margin-top:24px"></div>
+      </div>
+      <figure>
+        <div class="figcard pad"><img src="static/images/web/intphys2.webp" alt="Three IntPhys 2 scenes: objects falling into wooden boxes, a metal ball rolling down a slope, and a camera panning across a café" width="2400" height="1037" loading="lazy"></div>
+        <figcaption><strong>IntPhys 2 examples.</strong> Left: one object rests, one bounces. Middle: a ball rolls, hits a block
+          and bounces. Right: a steady camera pan.</figcaption>
+      </figure>
+    </div>
+
+    <div class="sub split rev" style="margin-top:96px">
+      <div>
+        <div class="vtoggle"><div class="seg" id="vidseg"></div></div>
+        <div class="hbars" id="vidbars"></div>
+        <p class="lb-note" id="vidnote"></p>
+      </div>
+      <div class="prose sticky">
+        <h3><span class="num">02</span>Real-world video reasoning</h3>
+        <p>On <strong>Video-Holmes</strong>, with 32 uniformly sampled frames per video, ChronoVision scores
+          <strong>45.89</strong> overall, above GPT-4o (42.00) and Gemini-2.5-Pro (45.00).</p>
+        <p>On <strong>LongVideo-Reason</strong> it reaches <strong>74.7</strong> and is highest on all four categories:
+          temporal, goal, plot and spatial reasoning.</p>
+      </div>
+    </div>
+
+    <div class="sub split" style="margin-top:96px">
+      <div class="prose sticky">
+        <h3><span class="num">03</span>General abilities are preserved</h3>
+        <p>On seven general vision-language benchmarks, ChronoVision stays within 2 points of Qwen3.5-9B. It gains slightly on
+          MMMU, MathVista, HallusionBench and <strong>BabyVision (+1.5)</strong>; the largest drop is MMBench (−1.9).</p>
+      </div>
+      <div>
+        <div class="legend"><span><i style="background:var(--ink-44)"></i>Qwen3.5-9B (base)</span><span><i style="background:var(--c1)"></i>ChronoVision</span></div>
+        <div class="chartscroll"><svg class="chart" id="genchart" role="img" aria-label="General benchmark scores, base vs ChronoVision"></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     qualitative
+     ================================================================== -->
+<section class="block" id="examples">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">Qualitative</span><h2>Reasoning side by side</h2></div>
+    <div class="grid"><div class="rail prose reveal" style="margin-bottom:28px">
+      <p>Strong baselines write fluent, step-by-step descriptions and still break the order. ChronoVision's
+        <code>&lt;locate&gt;</code> cues name what changes in each frame and lead it to the right sequence.</p>
+    </div></div>
+    <div class="qtabs" id="qtabs">
+      <button class="chip" aria-pressed="true" data-i="0">Block stacking</button>
+      <button class="chip" aria-pressed="false" data-i="1">Sorting animal faces</button>
+      <button class="chip" aria-pressed="false" data-i="2">Camera orbit</button>
+    </div>
+    <div class="qstage" id="qstage">
+      <div class="figcard pad on"><img src="static/images/web/qual_1.webp" alt="Transformation problem, ground truth EFDBAC: Grok 4.20 Beta and Claude Sonnet 4.5 answer wrongly, ChronoVision answers E F D B A C" width="2400" height="1399" loading="lazy"></div>
+      <div class="figcard pad"><img src="static/images/web/qual_2.webp" alt="Mental simulation problem, ground truth CEBDFA: Qwen3.5 397B and GLM 4.6V answer wrongly, ChronoVision answers C E B D F A" width="2400" height="1337" loading="lazy"></div>
+      <div class="figcard pad"><img src="static/images/web/qual_3.webp" alt="Transformation problem, ground truth EDCBAF: Gemini 3.0 Flash and GPT-o3 answer wrongly, ChronoVision answers E D C B A F" width="2400" height="1388" loading="lazy"></div>
+    </div>
+    <p class="caption" id="qcap" style="text-align:center"></p>
+  </div>
+</section>
+
+<!-- =====================================================================
+     citation
+     ================================================================== -->
+<section class="block" id="cite">
+  <div class="container">
+    <div class="sec-head"><h2>Citation</h2></div>
+    <div class="grid"><div class="rail">
+      <div class="bib">
+<pre id="bibtex">@inproceedings{shen2026chronovision,
+  title     = {ChronoVision: Temporal Reasoning via Latent State Reconstruction},
+  author    = {Shen, Yifan and Xu, Jian and Li, Boyi and Zhang, Yuner and
+               Yu, Tianjiao and Li, Bingxuan and Yang, Houze and Wang, Rushi and
+               Cao, Xu},
+  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in
+               Natural Language Processing (EMNLP)},
+  year      = {2026}
+}</pre>
+        <button class="btn copy" id="copybib">Copy</button>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="fl"><img src="static/images/web/logo.webp" alt="">ChronoVision · UIUC &amp; PediaMed AI</div>
+    <div>Contact: <a href="mailto:yifan26@illinois.edu">yifan26@illinois.edu</a></div>
+  </div>
+</footer>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="static/js/site.js"></script>
 </body>
 </html>

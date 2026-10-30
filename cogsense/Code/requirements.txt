@@ -1,0 +1,15 @@
+torch>=2.6
+torchvision
+transformers==5.0.0
+accelerate>=1.2
+pillow
+tqdm
+openai
+python-dotenv
+tensorboard
+
+# Training on GPUs
+deepspeed
+peft
+# flash-attn            # pip install flash-attn --no-build-isolation (or run the scripts with ATTN_IMPL=sdpa)
+
